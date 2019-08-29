@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/Kod3c/BendSwim.svg?token=uGF7ocFac7kxGsMF7qj4&branch=master)](https://travis-ci.com/Kod3c/BendSwim)
+<img src='https://img.shields.io/badge/Build-Almost%20Passing-orange'>
 
 
 # Swim Lesson Appointment System v.2.1
