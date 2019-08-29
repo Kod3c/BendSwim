@@ -1,4 +1,5 @@
 <img src='https://img.shields.io/badge/Build-Almost%20Passing-orange'>
+<img src='https://img.shields.io/github/issues/Kod3c/BendSwim'>
 
 
 # Swim Lesson Appointment System v.2.1
