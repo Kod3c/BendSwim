@@ -1,4 +1,7 @@
-# Swim Lesson Appointment System v.1.1
+[![Build Status](https://travis-ci.com/Kod3c/BendSwim.svg?token=uGF7ocFac7kxGsMF7qj4&branch=master)](https://travis-ci.com/Kod3c/BendSwim)
+
+
+# Swim Lesson Appointment System v.2.1
 
 ## CHANGELOG v.1.1
 
