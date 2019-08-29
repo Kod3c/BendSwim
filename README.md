@@ -1,4 +1,4 @@
-# Dental Clinic Appointment System v.1.1
+# Swim Lesson Appointment System v.1.1
 
 ## CHANGELOG v.1.1
 
@@ -13,6 +13,7 @@
 
 ## I've used the following framework, icons, favicon, file manager, Calendar or other files as listed.
 
+- Thank's to comestoarra-labs - https://codecanyon.net/item/dental-clinic-appointment-system/17619098
 - Thank's to BOOTSTRAP - www.getbootstrap.com
 - Thank's to slim PHP FRAMEWORK - www.slimframework.com
 - Thank's to TWIG TEMPLATING ENGINE - www.twig.sensiolabs.org/
