@@ -1,0 +1,60 @@
+{% extends 'Frontend/Default/Master/Base.twig' %}
+
+{% block title %}{{ NAME }} - {{ TITLE }}{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block content %}
+
+    {% if error %}
+
+        {{ error }}
+
+    {% endif %}
+
+    <div class="container" style="padding-top: 50px;">
+        <div class="content">
+
+            <svg viewBox="0 0 1800 300">
+
+                <!-- Symbol -->
+                <symbol id="s-text">
+                    <text style="font-size: 280px;" text-anchor="middle" x="50%" y="50%" dy=".35em">
+                        {{ NAME }}
+                    </text>
+                </symbol>
+
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+                <use xlink:href="#s-text" class="text"></use>
+
+            </svg>
+
+        </div>
+
+        <div align="center">
+            <p>{{ LANG['GLOBAL_WELCOME'] }} {{ LANG['GLOBAL_TO'] }} {{ TITLE }}</p>
+            <p>{{ TIME }}</p>
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+
+    {{  SCRIPT|raw }}
+{% endblock %}

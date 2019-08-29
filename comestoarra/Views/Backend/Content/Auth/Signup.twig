@@ -1,0 +1,63 @@
+{% extends 'Backend/Content/Auth/Base.twig' %}
+
+{% block content %}
+
+    {% if APP_LOGO != "" %}
+
+        <div align="center" style="padding-top: 40px;">
+
+            <img src="{{ PUBLIC_DIR }}logo/{{ APP_LOGO }}" alt="" width="100px;">
+
+        </div>
+
+    {% endif %}
+
+    <div class="form-login">
+
+        <form method="post" action="{{ SIGNUP_ACTION }}">
+            <h1>Sign Up</h1>
+            <p>
+                <label for="login">Username</label>
+                <input type="text" pattern="[a-zA-Z0-9]{2,64}" name="user_name" placeholder="Username (letters/numbers, 2-64 chars)" required>
+            </p>
+            <p>
+                <label for="login">Email Address</label>
+                <input type="text" name="user_email" placeholder="email address (a real address)" required>
+            </p>
+            <p>
+                <label for="password">Password</label>
+                <input type="password" name="user_password_new" pattern=".{6,}" placeholder="Password (6+ characters)" required autocomplete="off">
+            </p>
+
+            <p>
+                <label for="password">Repeat Password</label>
+                <input type="password" name="user_password_repeat" pattern=".{6,}" required placeholder="Repeat your password" autocomplete="off">
+            </p>
+
+            <p>
+
+                <img id="captchaImage" src="{{ CAPTCHA }}" width="100%" style="margin-top: 10px;"/>
+
+                <input type="text" name="captcha" placeholder="Please enter above characters" required/>
+
+            </p>
+
+            <p align="center" style="margin: 10px;">Enter Captcha or <a class="link" href="javascript:void(0)" onclick="document.getElementById('captchaImage').src =
+
+                        '{{ CAPTCHA }}&morerandom=' + Math.floor(Math.random() * 10000);"><span class="fa fa-refresh"></span> Refresh</a>
+            </p>
+
+            <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+            <p>
+                <input type="submit" name="submit" value="Submit">
+            </p>
+            <br>
+            <div id="auth-link">
+                <a class="link" href="{{ LOGIN_LINK }}">Secure Login</a> - <a class="link" href="{{ FORGOT_LINK }}">Forgot Password ?</a>
+            </div>
+        </form>​
+
+    </div>
+
+{% endblock %}

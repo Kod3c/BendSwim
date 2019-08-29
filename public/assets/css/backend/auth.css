@@ -1,0 +1,177 @@
+/* GLOBALS */
+body {
+    background: #f5f5f5;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+}
+.container > header h1,
+.container > header h2 {
+    color: #222;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.7);
+}
+
+*,
+*:after,
+*:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.form-login {
+    background: rgba(255,255,255, 0.8);
+    border-radius: 10px;
+    /* Size and position */
+    width: 450px;
+    margin: 10px auto 30px;
+    padding: 30px;
+    position: relative;
+
+    /* Font styles */
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    color: #222;
+    text-align: center;
+}
+
+.form-login h1 {
+    font-size: 18px;
+    text-transform: uppercase;
+    padding-bottom: 40px;
+}
+
+.form-login input[type=text],
+.form-login input[type=password] {
+    /* Size and position */
+    width: 100%;
+    padding: 8px 4px 8px 10px;
+    margin-bottom: 15px;
+
+    /* Styles */
+    border: 1px solid #222; /* Fallback */
+    border: 1px solid rgba(78,48,67, 0.8);
+    background: rgba(0,0,0,0.15);
+    border-radius: 2px;
+    box-shadow:
+    0 1px 0 rgba(255,255,255,0.2),
+    inset 0 1px 1px rgba(0,0,0,0.1);
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+    /* Font styles */
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+    color: #222;
+    font-size: 13px;
+}
+
+/* Placeholder style (from http://stackoverflow.com/questions/2610497/change-an-inputs-html5-placeholder-color-with-css) */
+
+.form-login input::-webkit-input-placeholder {
+    color: rgba(37,21,26,0.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.form-login input:-moz-placeholder {
+    color: rgba(37,21,26,0.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.form-login input:-ms-input-placeholder {
+    color: rgba(37,21,26,0.5);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.15);
+}
+
+.form-login input[type=text]:hover,
+.form-login input[type=password]:hover {
+    border-color: #333;
+}
+
+.form-login input[type=text]:focus,
+.form-login input[type=password]:focus,
+.form-login input[type=submit]:focus {
+    box-shadow:
+    0 1px 0 rgba(255,255,255,0.2),
+    inset 0 1px 1px rgba(0,0,0,0.1),
+    0 0 0 3px rgba(255,255,255,0.15);
+    outline: none;
+}
+
+/* Fallback */
+.no-boxshadow .form-login input[type=text]:focus,
+.no-boxshadow .form-login input[type=password]:focus {
+    outline: 1px solid white;
+}
+
+.form-login input[type=submit] {
+    /* Size and position */
+    width: 100%;
+    padding: 8px 5px;
+
+    /* Styles */
+    background: #222;
+
+    border-radius: 5px;
+    border: 1px solid #222;
+    box-shadow: inset 0 1px rgba(255,255,255,0.4), 0 2px 1px rgba(0,0,0,0.1);
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+
+    /* Font styles */
+    color: white;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Raleway', 'Lato', Arial, sans-serif;
+}
+
+.form-login input[type=submit]:hover {
+    box-shadow:
+    inset 0 1px rgba(255,255,255,0.2),
+    inset 0 20px 30px rgba(0,0,0,0.5);
+}
+
+/* Fallback */
+.no-boxshadow .form-login input[type=submit]:hover {
+    background: #000;
+}
+
+.form-login label {
+    display: none;
+    padding: 0 0 5px 2px;
+    cursor: pointer;
+}
+
+.form-login label:hover ~ input {
+    border-color: #000;
+}
+
+.no-placeholder .form-login label {
+    display: block;
+}
+
+.link {
+    text-decoration: none;
+    font-size: 12px;
+    color: #222;
+}
+
+#auth-link a:hover {
+    color: #d20c0c;
+}

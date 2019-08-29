@@ -1,0 +1,506 @@
+{% extends 'Backend/Master/Base.twig' %}
+
+{% block title %}{{ NAME }} - {{ TITLE }}{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+{% endblock %}
+
+{% block content %}
+
+    {% if error %}
+
+        {{ error }}
+
+    {% endif %}
+
+    <div class="container{% if CONTENT_FLUID %}-fluid{% endif %}">
+        <!-- Page Heading -->
+        <div class="row page-header">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-user"></i> My Profile
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- /.row -->
+        <div class="row">
+
+            <div class="col-lg-3">
+
+                <div class="panel panel-default">
+                    <div class="modal-body">
+                        <p align="center"><img src="{{ AVATAR }}" alt="" width="200px"></p>
+                    </div>
+                    <div class="modal-footer">
+
+                        <div class="col-md-12">
+                            <form id="uploadAvatarAction" action="{{ urlFor( 'uploadAvatarAction' ) }}" method="post" enctype="multipart/form-data">
+                                <span id="avatar_button" class="btn btn-block btn-default btn-file" data-toggle="tooltip" data-placement="bottom" title="Select an avatar image from your hard-disk">
+                                    UPLOAD NEW AVATAR <input type="file" id="avatar_file" name="avatar_file" accept="image/*" required >
+                                </span>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="{{ HUGE_AVATAR_MAX_SIZE }}" />
+                                <output id="cbn_avatar_list"></output>
+                                <input type="submit" id="avatar_upload" onclick="return comestoarraAlert( '#uploadAvatarAction', 'warning', '' );" class='btn btn-block btn-success' value="UPLOAD NEW AVATAR">
+                                <a id="avatar_upload_cancel" onclick="reload()" class='btn btn-block btn-danger'>CANCEL</a>
+
+                                <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
+                            <li class="active"><a href="#profile" data-toggle="tab">My Profile</a></li>
+                            <li><a href="#auth" data-toggle="tab">My Login Information</a></li>
+                            <li><a href="#activities" data-toggle="tab">My Activities</a></li>
+                            <li><a href="#messages" data-toggle="tab">My Messages</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+
+                            <div class="tab-pane fade in active" id="profile">
+                                <br />
+
+                                <form id="updateProfileAction" role="form" method="post" action="{{ urlFor( 'updateProfileAction' ) }}">
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="first_name">First Name</label>
+                                            <input id="first_name" name="first_name" class="form-control" value="{{ USER_PROFILE['first_name'] }}">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="last_name">Last Name</label>
+                                            <input id="last_name" name="last_name" class="form-control" value="{{ USER_PROFILE['last_name'] }}">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="birth_date">Birthday</label>
+                                            <input id="birth_date" name="birth_date" class="form-control" value="{{ USER_PROFILE['birth_date'] }}">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input id="phone" name="phone" class="form-control" value="{{ USER_PROFILE['phone'] }}">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="bio">Bio</label>
+                                            <textarea id="bio" name="bio" class="form-control" rows="3">{{ USER_PROFILE['bio'] }}</textarea>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <textarea id="address" name="address" class="form-control" rows="3">{{ USER_PROFILE['address'] }}</textarea>
+                                        </div>
+
+                                    </div>
+
+                                    <input type="hidden" id="user_id" name="user_id" value="{{ ID }}">
+
+                                    <div class="col-md-6">
+
+                                        <button type="submit" class="btn btn-primary" onclick="return comestoarraAlert( '#updateProfileAction', 'warning', '' );">Update Profile</button>
+
+                                    </div>
+
+                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                </form>
+
+                            </div>
+
+                            <div class="tab-pane fade in" id="auth">
+                                <br />
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="user_email">Email Address <a class="cbn-modal-link" href="#" data-toggle="modal" data-target="#changeEmail">change your email ?</a></label>
+                                        <input id="user_email" class="form-control" value="{{ EMAIL }}" disabled>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Username <a class="cbn-modal-link" href="#" data-toggle="modal" data-target="#changeUsername">change your username ?</a></label>
+                                    <div class="form-group input-group">
+                                        <span class="input-group-addon">@</span>
+                                        <input type="text" class="form-control" placeholder="Username" value="{{ USERNAME }}" disabled>
+                                    </div>
+
+                                </div>
+
+
+                                <form id="changePasswordAction" role="form" method="post" action="{{ urlFor( 'changePasswordAction' ) }}">
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="reset_input_password_new">Password</label>
+                                            <input id="reset_input_password_new" class="form-control" type="text"
+                                                   name="user_password_new" required autocomplete="off" />
+                                            <input type='hidden' name='user_name' value='{{ USERNAME }}' />
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="reset_input_password_repeat">Password (again)</label>
+                                            <input id="reset_input_password_repeat" class="form-control" type="password"
+                                                   name="user_password_repeat" required autocomplete="off" />
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <button type="submit" class="btn btn-danger" onclick="return comestoarraAlert( '#changePasswordAction', 'warning', '' );">Change Password</button>
+
+                                    </div>
+
+                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                </form>
+
+                                <!-- Change Email Modal -->
+                                <div class="modal fade" id="changeEmail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                <h4 class="modal-title" id="myModalLabel">Change Email Address : {{ EMAIL }}</h4>
+                                            </div>
+
+                                            <form action="{{ urlFor( 'changeEmailAction' ) }}" method="post" role="form">
+                                                <div class="modal-body">
+
+                                                    <div class="form-group">
+                                                        <label for="user_email">New Email Address</label>
+                                                        <input id="user_email" class="form-control" type="text" name="user_email" required>
+                                                        <p class="help-block">Please provide an valid Email Address !</p>
+                                                    </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+
+                                                    <a class="btn btn-danger" data-dismiss="modal">Close</a>
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+
+                                                </div>
+                                                <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                            </form>
+
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+
+                                <!-- Change Username Modal -->
+                                <div class="modal fade" id="changeUsername" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                <h4 class="modal-title" id="myModalLabel">Change Username : @{{ USERNAME }}</h4>
+                                            </div>
+                                            <form action="{{ urlFor( 'changeUsernameAction' ) }}" method="post" role="form">
+                                                <div class="modal-body">
+
+                                                        <div class="form-group input-group">
+                                                            <span class="input-group-addon">@</span>
+                                                            <input type="text" class="form-control" placeholder="New Username" name="user_name" required>
+                                                        </div>
+
+                                                </div>
+                                                <div class="modal-footer">
+
+                                                    <a class="btn btn-danger" data-dismiss="modal">Close</a>
+                                                    <button type="submit" class="btn btn-success">Submit</button>
+
+                                                </div>
+                                                <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+                                            </form>
+                                        </div>
+                                        <!-- /.modal-content -->
+                                    </div>
+                                    <!-- /.modal-dialog -->
+                                </div>
+                                <!-- /.modal -->
+
+                            </div>
+
+                            <div class="tab-pane fade in" id="activities">
+                                <br />
+                                <div class="cbn-activities-panel panel panel-default">
+                                    <div class="panel-body">
+                                    <ul class="cbn-activities">
+
+                                        {% if USER_AUDIT  %}
+
+                                            {% for audit in USER_AUDIT %}
+
+                                                <li class="left clearfix">
+                                                    <span class="cbn-activities-img pull-left">
+                                                        <img src="{{ AVATAR }}" width="50px" class="img-circle" />
+                                                    </span>
+                                                    <div class="cbn-activities-body clearfix">
+                                                        <div class="header">
+                                                            <strong class="primary-font">{{ USERNAME }}</strong>
+                                                            <small class="pull-right text-muted">
+                                                                <i class="fa fa-clock-o fa-fw"></i> {{ audit.created_date }}
+                                                            </small>
+                                                        </div>
+                                                        <p>
+                                                            {{ audit.content_audit|e }}
+                                                        </p>
+                                                    </div>
+                                                </li>
+
+                                            {% endfor %}
+
+                                        {% endif %}
+
+                                    </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade in" id="messages">
+                                <br />
+                                <div class="cbn-activities-panel panel panel-default">
+                                    <div class="panel-body">
+
+                                        <ul class="cbn-activities">
+
+                                            {% if ( UNREAD_MESSAGE_COUNT > 0 ) %}
+
+                                                {% for mail in UNREAD_MESSAGE_USER %}
+
+                                                    <li class="left clearfix">
+                                                        <a href="{{ urlFor( 'mailbox' ) }}" style="text-decoration: none; color: black;">
+                                                        <span class="cbn-activities-img pull-left">
+                                                            {% if mail.user_has_avatar %}
+                                                                <img src="{{ SENDER_MAIL_AVATARS }}{{ mail.user_id }}.jpg" width="50px" class="img-circle" />
+                                                            {% else %}
+                                                                <img src="{{ SENDER_MAIL_AVATARS }}default.jpg" width="50px" class="img-circle" />
+                                                            {% endif %}
+                                                        </span>
+                                                        <div class="cbn-activities-body clearfix">
+                                                            <div class="header">
+                                                                <strong class="primary-font">{{ mail.first_name }} {{ mail.last_name }}</strong> <a href="mailto:{{ mail.user_email }}">{{ mail.user_email }}</a>
+                                                                <small class="pull-right text-muted">
+                                                                    <i class="fa fa-clock-o fa-fw"></i> {{ mail.sent_date }}
+                                                                </small>
+                                                            </div>
+                                                            <p>
+                                                                <strong>{{ mail.mail_title|e }}</strong> <span class="label label-danger">unread</span>
+                                                            </p>
+                                                            <p>
+                                                                {{ mail.mail_content }}
+                                                            </p>
+                                                        </div>
+                                                        </a>
+                                                    </li>
+
+                                                {% endfor %}
+                                                <li>
+                                                    <a class="btn btn-block btn-primary" href="{{ urlFor( 'mailbox' ) }}">Read All New Messages</a>
+                                                </li>
+                                            {% endif %}
+
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+
+            </div>
+            <!-- /.col-lg-12 -->
+
+        </div>
+
+    </div><!-- /.container-fluid -->
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+
+    {{  SCRIPT|raw }}
+
+    <script type="text/javascript">
+
+        $('.row').tooltip({
+            selector: "[data-toggle=tooltip]",
+            container: "body"
+        })
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function handleFileSelect( evt ) {
+
+                var files = evt.target.files;
+                for (var i = 0, f; f = files[i]; i++) {
+
+                    if ( ! f.type.match('image.*') ) {
+
+                        continue;
+
+                    }
+                    var reader = new FileReader();
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            $('#avatar_button').hide();
+                            $('#avatar_file').hide();
+                            $('#avatar_upload').show();
+                            $('#avatar_upload_cancel').show();
+                            var span = document.createElement('span');
+                            span.innerHTML = ['<p align="center"><img class="uploadThumb" src="', e.target.result,
+                                '" title="', escape(theFile.name), '"/></p>'].join('');
+                            document.getElementById('cbn_avatar_list').insertBefore(span, null);
+                        };
+                    })(f);
+                    reader.readAsDataURL(f);
+
+                }
+
+            }
+
+            $('#avatar_upload').hide();
+            $('#avatar_upload_cancel').hide();
+            document.getElementById('avatar_file').addEventListener('change', handleFileSelect, false);
+
+        });
+    </script>
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $( "#birth_date" ).datepicker({
+                dateFormat: 'dd-mm-yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1940:{{ "now"|date("Y") }}'
+            });
+        });
+    </script>
+
+    <script src="{{ GLOBAL_COMPONENTS }}gritter/js/jquery.gritter.min.js" type="text/javascript"></script>
+    {% if errors %}
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ errors }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+    {% endif %}
+
+    {% if flash.error %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.error }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.info %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Information !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.info }}</i>",
+                class_name: 'gritter-facebook gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.success %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Congratulations !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.success }}</i>",
+                class_name: 'gritter-success gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+{% endblock %}

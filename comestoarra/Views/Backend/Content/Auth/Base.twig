@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ NAME }} - {{ TITLE }}</title>
+    <meta name="description" content="{{ META_DESC }}" />
+    <meta name="keywords" content="{{ META_KEY }}" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="{% if APP_FAVICON != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_FAVICON }} {% else %} {{ DEFAULT_FAVICON }} {% endif %}">
+    <link rel="stylesheet" href="{{ BACKEND_ASSETS_CSS }}auth.css" type="text/css" />
+    <link rel="stylesheet" href="{{ PUBLIC_ASSETS }}font-awesome/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}gritter/css/jquery.gritter.css" type="text/css" />
+    <script src="{{ GLOBAL_ASSETS_JS }}modernizr.js"></script>
+    
+</head>
+<body>
+
+<div class="container">
+
+    <section class="main">
+
+        {% block content %}{% endblock %}
+
+    </section>
+
+</div>
+
+<script src="{{ JQUERY_COMPONENT }}" type="text/javascript"></script>
+<script src="{{ GLOBAL_COMPONENTS }}backstretch/jquery.backstretch.min.js"></script>
+<script type="text/javascript">
+    $.backstretch([
+        "{{ BACKEND_ASSETS_IMG }}auth/1.jpg",
+        "{{ BACKEND_ASSETS_IMG }}auth/2.jpg",
+        "{{ BACKEND_ASSETS_IMG }}auth/3.jpg"
+    ], {
+        fade: 2000,
+        duration: 10000
+    });
+</script>
+<script src="{{ GLOBAL_COMPONENTS }}gritter/js/jquery.gritter.min.js" type="text/javascript"></script>
+
+{% if flash.error %}
+
+    <script>
+        $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+            // (string | mandatory) the text inside the notification
+            text: "<i>{{ flash.error }}</i>",
+            class_name: 'gritter-alert gritter-icon'
+        });
+    </script>
+
+{% endif %}
+
+{% if flash.info %}
+
+    <script>
+        $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: '<i class="fa fa-smile-o"></i> Information !',
+            // (string | mandatory) the text inside the notification
+            text: "<i>{{ flash.info }}</i>",
+            class_name: 'gritter-facebook gritter-icon'
+        });
+    </script>
+
+{% endif %}
+
+{% if flash.success %}
+
+    <script>
+        $.gritter.add({
+            // (string | mandatory) the heading of the notification
+            title: '<i class="fa fa-smile-o"></i> Congratulations !',
+            // (string | mandatory) the text inside the notification
+            text: "<i>{{ flash.success }}</i>",
+            class_name: 'gritter-success gritter-icon'
+        });
+    </script>
+
+{% endif %}
+</body>
+</html>

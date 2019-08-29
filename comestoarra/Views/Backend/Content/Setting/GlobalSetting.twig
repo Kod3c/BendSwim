@@ -1,0 +1,648 @@
+{% extends 'Backend/Master/Base.twig' %}
+
+{% block title %}{{ NAME }} - {{ TITLE }}{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block content %}
+
+    {% if PROVIDER == 'DEFAULT' %}
+    <div class="navbar-lower">
+        <div class="cbn-action style-underline">
+            <nav>
+                <ul>
+                    <li class="active"><a href="{{ urlFor( 'globalSetting' ) }}" class="fa fa-wrench"> <span>Global Settings</span></a></li>
+                    <li class=""><a href="{{ urlFor( 'users' ) }}" class="fa fa-group"> <span>User &amp; Role Manager</span></a></li>
+                    {% if ROLE == 7 %}
+                        <li class=""><a href="{{ urlFor( 'allAuditTrails' ) }}" class="fa fa-list"> <span>Simple Audit Trails</span></a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div><!-- /tabs -->
+    </div>
+    {% endif %}
+    
+    <div id="page-wrapper">
+
+        <div class="container{% if CONTENT_FLUID %}-fluid{% endif %}">
+            <!-- Page Heading -->
+            <div class="row page-header">
+                <div class="col-lg-12">
+                    <ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-wrench"></i> Global Settings
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+            {#{% if ROLE == 7 %}#}
+            {% if PERMISSION %}
+
+                <!-- Check MIME Type -->
+                {{ MIME }} {{ MIMECOUNT }}
+
+                <div class="row">
+
+                    <div class="col-lg-3">
+
+                        <div class="panel panel-default">
+                            <div class="modal-body">
+                                <p align="center"><img src="{% if APP_LOGO != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_LOGO }} {% else %} {{ DEFAULT_LOGO_FAVICON }} {% endif %}" alt="" width="100px"></p>
+                            </div>
+                            <div class="modal-footer">
+
+                                <div class="col-md-12">
+                                    <form id="updateGlobalLogoAction" action="{{ urlFor( 'updateGlobalLogoAction' ) }}" method="post" enctype="multipart/form-data">
+                                    <span id="logo_button" class="btn btn-block btn-default btn-file" data-toggle="tooltip" data-placement="bottom" title="Select an logo image from your hard-disk (will be scaled to 100x100 px), max : {{ MAX_SIZE }}">
+                                        UPLOAD NEW LOGO <input type="file" id="logo_file" name="logo_file" accept="image/*" required >
+                                    </span>
+
+                                        <output id="cbn_logo_list"></output>
+                                        <input type="submit" id="logo_upload" onclick="return comestoarraAlert( '#updateGlobalLogoAction', 'warning', '' );" class='btn btn-block btn-default' value="UPLOAD NEW LOGO">
+                                        <input type="hidden" id="id" name="id" value="{{ SETTING_ID }}">
+                                        <a id="logo_upload_cancel" onclick="reload()" class='btn btn-block btn-danger'>CANCEL</a>
+
+                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="modal-body">
+                                <p align="center"><img src="{% if APP_FAVICON != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_FAVICON }} {% else %} {{ DEFAULT_LOGO_FAVICON }} {% endif %}" alt="" width="32px"></p>
+                            </div>
+                            <div class="modal-footer">
+
+                                <div class="col-md-12">
+                                    <form id="updateGlobalFaviconAction" action="{{ urlFor( 'updateGlobalFaviconAction' ) }}" method="post" enctype="multipart/form-data">
+                                    <span id="favicon_button" class="btn btn-block btn-default btn-file" data-toggle="tooltip" data-placement="bottom" title="Select an favicon image from your hard-disk (will be scaled to 32x32 px), max : {{ MAX_SIZE }}">
+                                        UPLOAD NEW FAVICON <input type="file" id="favicon_file" name="favicon_file" accept="image/*" required >
+                                    </span>
+
+                                        <output id="cbn_favicon_list"></output>
+                                        <input type="submit" id="favicon_upload" onclick="return comestoarraAlert( '#updateGlobalFaviconAction', 'warning', '' );" class='btn btn-block btn-default' value="UPLOAD NEW FAVICON">
+                                        <input type="hidden" id="id" name="id" value="{{ SETTING_ID }}">
+                                        <a id="favicon_upload_cancel" onclick="reload()" class='btn btn-block btn-danger'>CANCEL</a>
+
+                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-9">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Browser Usage Statistics
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <div id="browser_stats_chart"></div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="panel panel-default">
+
+                            <div class="panel-body">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
+                                    <li class="active"><a href="#global" data-toggle="tab">Global Settings</a></li>
+                                    <li><a href="#mail" data-toggle="tab">Mail Settings</a></li>
+                                    <li><a href="#backup" data-toggle="tab">DB Backup</a></li>
+                                    <li><a href="#language" data-toggle="tab">Language</a></li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+
+                                    <div class="tab-pane fade in active" id="global">
+                                        <br />
+
+                                        <form id="updateGlobalSettingAction" role="form" method="post" action="{{ urlFor( 'updateGlobalSettingAction' ) }}">
+
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label for="site_url">Site URL</label>
+                                                <input name="site_url" id="site_url" class="form-control" value="{{ SITE_URL }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label for="site_name">Site Name</label>
+                                                <input name="site_name" id="site_name" class="form-control" value="{{ SITE_NAME }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label for="site_title">Site Title</label>
+                                                <input name="site_title" id="site_title" class="form-control" value="{{ SITE_TITLE }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label for="owner_name">Owner Name</label>
+                                                <input name="owner_name" id="owner_name" class="form-control" value="{{ OWNER_NAME }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label for="owner_email">Owner Email</label>
+                                                <input name="owner_email" id="owner_email" class="form-control" value="{{ OWNER_EMAIL }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-4">
+
+                                            <div class="form-group">
+                                                <label for="owner_address">Owner Address</label>
+                                                <input name="owner_address" id="owner_address" class="form-control" value="{{ OWNER_ADDRESS }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="upload_path">Uploaded Logo &amp; Favicon Path</label>
+                                                <input name="upload_path" id="upload_path" class="form-control" value="{{ UPLOAD_PATH }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="files_allowed">Files Allowed</label>
+                                                <input name="files_allowed" id="files_allowed" class="form-control" value="{{ FILES_ALLOWED }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="meta_desc">Meta Description</label>
+                                                <textarea name="meta_desc" id="meta_desc" class="form-control" rows="3">{{ META_DESC }}</textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="meta_key">Meta Keywords</label>
+                                                <textarea name="meta_key" id="meta_key" class="form-control" rows="3">{{ META_KEY }}</textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <input type="hidden" id="id" name="id" value="{{ SETTING_ID }}">
+
+                                        <div class="col-md-12">
+
+                                            <button type="submit" class="btn btn-block btn-success" onclick="return comestoarraAlert('#updateGlobalSettingAction', 'warning', '');">Update Global Settings</button>
+
+                                        </div>
+
+                                            <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                        </form>
+
+                                    </div>
+
+                                    <div class="tab-pane fade in" id="mail">
+                                        <br />
+
+                                        <form id="updateMailSettingAction" role="form" method="post" action="{{ urlFor( 'updateMailSettingAction' ) }}">
+
+                                            <div class="col-md-12">
+
+                                                <div class="form-group">
+                                                    <label for="mail_engine">Mailer Engine  {% if MAIL_ENGINE == "Send Grid" %}<span class="label label-danger">soon</span>{% endif %}</label>
+                                                    <select name="mail_engine" id="mail_engine" class="form-control">
+                                                        <option value="PHP Native Mail" {% if MAIL_ENGINE == "PHP Native Mail" %} selected {% endif %} >PHP Native Mail</option>
+                                                        <option value="PHP Mailer" {% if MAIL_ENGINE == "PHP Mailer" %} selected {% endif %}>PHP Mailer</option>
+                                                        {#<option value="Send Grid" {% if MAIL_ENGINE == "Send Grid" %} selected {% endif %} >Send Grid</option>#}
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            
+                                            <div class="use-smtp">
+
+                                                <div class="col-md-12">
+    
+                                                    <div class="form-group">
+                                                        <label for="mail_used_smtp">Use SMTP ?</label>
+                                                        <select name="mail_used_smtp" id="mail_used_smtp" class="form-control">
+                                                            <option value="0" {% if MAIL_USED_SMTP == 0 %} selected {% endif %}>No</option>
+                                                            <option value="1" {% if MAIL_USED_SMTP == 1 %} selected {% endif %}>Yes</option>
+                                                        </select>
+                                                    </div>
+    
+                                                </div>
+                                            
+                                            </div>
+
+                                            <div class="smtp-setting">
+
+                                                <div class="col-md-4">
+
+                                                    <div class="form-group">
+                                                        <label for="mail_smtp_host">SMTP Host</label>
+                                                        <input name="mail_smtp_host" id="mail_smtp_host" class="form-control" value="{{ MAIL_SMTP_HOST }}">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <div class="form-group">
+                                                        <label for="mail_smtp_auth">SMTP Auth</label>
+                                                        <input name="mail_smtp_auth" id="mail_smtp_auth" class="form-control" value="{{ MAIL_SMTP_AUTH }}">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <div class="form-group">
+                                                        <label for="mail_smtp_port">SMTP Port</label>
+                                                        <input name="mail_smtp_port" id="mail_smtp_port" class="form-control" value="{{ MAIL_SMTP_PORT }}">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <div class="form-group">
+                                                        <label for="mail_smtp_encryption">SMTP Encryption</label>
+                                                        <select name="mail_smtp_encryption" id="mail_smtp_encryption" class="form-control">
+                                                            <option value="tls" {% if MAIL_SMTP_ENCRYPTION == "tls" %} selected {% endif %}>TLS</option>
+                                                            <option value="ssl" {% if MAIL_SMTP_ENCRYPTION == "ssl" %} selected {% endif %}>SSL</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <div class="form-group">
+                                                        <label for="mail_smtp_username">SMTP Username</label>
+                                                        <input name="mail_smtp_username" id="mail_smtp_username" class="form-control" value="{{ MAIL_SMTP_USERNAME }}">
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-4">
+
+                                                    <div class="form-group">
+                                                        <label for="mail_smtp_password">SMTP Password</label>
+                                                        <input type="password" name="mail_smtp_password" id="mail_smtp_password" class="form-control" value="{{ MAIL_SMTP_PASSWORD }}">
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            
+                                            <div class="sendgrid-setting">
+
+                                                <div class="col-md-12">
+
+                                                    <div class="form-group">
+                                                        <label for="mail_sendgrid_api">Send Grid API <span class="label label-danger">soon</span></label>
+                                                        <input name="mail_sendgrid_api" id="mail_sendgrid_api" class="form-control" value="{{ MAIL_SENDGRID_API }}">
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                            <input type="hidden" id="id" name="id" value="{{ SETTING_ID }}">
+
+                                            <div class="col-md-12">
+
+                                                <button type="submit" class="btn btn-block btn-primary" onclick="return comestoarraAlert('#updateMailSettingAction', 'warning', '');">Update Mail Settings</button>
+
+                                            </div>
+
+                                            <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                        </form>
+
+                                    </div>
+
+                                    <div class="tab-pane fade in" id="backup">
+                                        
+                                        <br><p>SOON</p>
+
+                                    </div>
+
+                                    <div class="tab-pane fade in" id="language">
+
+                                        <br><p>SOON</p>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <!-- /.row -->
+                <div class="col-lg-12" style="padding-top: 10px;">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            SORRY !
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <p>Sorry, You are not allowed to be here !</p>
+                            <a class="btn btn-default btn-lg btn-block" href="{{ urlFor( 'dashboard' ) }}">Back to Dashboard</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+            {% endif %}
+
+
+        </div><!-- /.container-fluid -->
+
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+
+    {{  SCRIPT|raw }}
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="{{ BACKEND_ASSETS_JS }}plugins/morris/morris.min.js"></script>
+
+    <script type="text/javascript">
+        Morris.Donut({
+            element: 'browser_stats_chart',
+            data: {{ BROWSER_STATS|raw }}
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        $('.row').tooltip({
+            selector: "[data-toggle=tooltip]",
+            container: "body"
+        });
+
+        $(function(e) {
+            e.preventDefault;
+            {% if MAIL_ENGINE == "Send Grid" %} 
+            
+                $('.smtp-setting').hide();
+                
+                $('.use-smtp').hide();
+                
+                $('.sendgrid-setting').show();
+                
+            {% else %}
+            
+                $('.smtp-setting').show();
+                
+                $('.use-smtp').show();
+                
+                $('.sendgrid-setting').hide();
+            
+            {% endif %}
+            
+            {% if MAIL_USED_SMTP == 0 %} 
+            
+                $('.smtp-setting').hide();
+            
+            {% endif %}
+
+            $('#mail_used_smtp').change(function() {
+            
+                if ( $('#mail_used_smtp').val() == '1' ) {
+                
+                    $('.smtp-setting').slideDown("slow");
+                    
+                } else {
+                
+                    $('.smtp-setting').slideUp("slow");
+                    
+                }
+                
+            });
+            
+            $('#mail_engine').change(function() {
+            
+                if ( $('#mail_engine').val() == 'Send Grid' ) {
+                
+                    $('.smtp-setting').hide();
+                
+                    $('.use-smtp').hide();
+                    
+                    $('.sendgrid-setting').show();
+                    
+                } else {
+                
+                    $('.smtp-setting').show();
+                    
+                    $('.use-smtp').show();
+                    
+                    $('.sendgrid-setting').hide();
+                    
+                }
+                
+            });
+
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function handleFileSelect( evt ) {
+
+                var files = evt.target.files;
+                for (var i = 0, f; f = files[i]; i++) {
+
+                    if ( ! f.type.match('image.*') ) {
+
+                        continue;
+
+                    }
+                    var reader = new FileReader();
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            $('#logo_button').hide();
+                            $('#logo_file').hide();
+                            $('#logo_upload').show();
+                            $('#logo_upload_cancel').show();
+                            var span = document.createElement('span');
+                            span.innerHTML = ['<p align="center"><img class="uploadThumb" src="', e.target.result,
+                                '" title="', escape(theFile.name), '"/></p>'].join('');
+                            document.getElementById('cbn_logo_list').insertBefore(span, null);
+                        };
+                    })(f);
+                    reader.readAsDataURL(f);
+
+                }
+
+            }
+
+            $('#logo_upload').hide();
+            $('#logo_upload_cancel').hide();
+            document.getElementById('logo_file').addEventListener('change', handleFileSelect, false);
+
+        });
+
+        $(document).ready(function() {
+
+            function handleFileSelect( evt ) {
+
+                var files = evt.target.files;
+                for (var i = 0, f; f = files[i]; i++) {
+
+                    if ( ! f.type.match('image.*') ) {
+
+                        continue;
+
+                    }
+                    var reader = new FileReader();
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            $('#favicon_button').hide();
+                            $('#favicon_file').hide();
+                            $('#favicon_upload').show();
+                            $('#favicon_upload_cancel').show();
+                            var span = document.createElement('span');
+                            span.innerHTML = ['<p align="center"><img class="uploadThumb" src="', e.target.result,
+                                '" title="', escape(theFile.name), '"/></p>'].join('');
+                            document.getElementById('cbn_favicon_list').insertBefore(span, null);
+                        };
+                    })(f);
+                    reader.readAsDataURL(f);
+
+                }
+
+            }
+
+            $('#favicon_upload').hide();
+            $('#favicon_upload_cancel').hide();
+            document.getElementById('favicon_file').addEventListener('change', handleFileSelect, false);
+
+        });
+
+    </script>
+
+    <script src="{{ GLOBAL_COMPONENTS }}gritter/js/jquery.gritter.min.js" type="text/javascript"></script>
+    {% if errors %}
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ errors }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+    {% endif %}
+
+    {% if flash.error %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.error }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.info %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Information !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.info }}</i>",
+                class_name: 'gritter-facebook gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.success %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Congratulations !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.success }}</i>",
+                class_name: 'gritter-success gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+{% endblock %}

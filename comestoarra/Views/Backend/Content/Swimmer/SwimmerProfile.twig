@@ -1,0 +1,860 @@
+{% extends 'Backend/Master/Base.twig' %}
+
+{% block title %}{{ NAME }} - {{ TITLE }}{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}datatables/media/css/dataTables.bootstrap.min.css" type="text/css" />
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.css" type="text/css" />
+
+{% endblock %}
+
+{% block content %}
+
+    {% if error %}
+
+        {{ error }}
+
+    {% endif %}
+
+    <div class="container{% if CONTENT_FLUID %}-fluid{% endif %}">
+        <!-- Page Heading -->
+        <div class="row page-header">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-users"></i>  <a href="{{ urlFor( 'Swimmers' ) }}">Swimmers Manager</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-user"></i> Swimmer Profile
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        {% if PERMISSION %}
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-lg-3">
+
+                    <div class="panel panel-default">
+                        <div class="modal-body">
+                            {% if Swimmer_PROFILE['avatar'] %}
+                                <p align="center"> <img src="{{ PUBLIC_DIR }}avatars/Swimmers/{{ Swimmer_PROFILE['avatar'] }}" alt="" width="250px"></p>
+                            {% else %}
+                                <p align="center"><img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="200px"></p>
+                            {% endif %}
+                            <hr>
+                            <p align="center">
+                                <strong>
+                                    {% if Swimmer_PROFILE['last_name'] %}{{ Swimmer_PROFILE['last_name']|e }}, {% endif %}{{ Swimmer_PROFILE['first_name']|e }}
+                                </strong>
+                            </p>
+                            <hr>
+                            <p align="center">
+                                <strong>#{{ NAME }} - {{ Swimmer_PROFILE['birthdate']|replace({'-': ''}) }} - P{{ Swimmer_PROFILE['Swimmer_id']|e }}</strong>
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+
+                            <div class="col-md-12">
+
+                                <form id="uploadAvatarAction" action="{{ urlFor( 'uploadSwimmerAvatarAction' ) }}" method="post" enctype="multipart/form-data">
+                                    <span id="avatar_button" class="btn btn-block btn-default btn-file" rel="tooltip"  data-placement="bottom" title="Select an avatar image from your hard-disk, only .jpg">
+                                        UPLOAD NEW AVATAR <input type="file" id="avatar_file" name="avatar_file" accept="image/*" required >
+                                    </span>
+                                    <input type="hidden" name="MAX_FILE_SIZE" value="{{ HUGE_AVATAR_MAX_SIZE }}" />
+                                    <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
+                                    <input type="hidden" id="first_name" name="first_name" value="{{ Swimmer_PROFILE['first_name'] }}">
+                                    <input type="hidden" id="last_name" name="last_name" value="{{ Swimmer_PROFILE['last_name'] }}">
+                                    <input type="hidden" id="user_name" name="user_name" value="{{ Swimmer_PROFILE['user_name'] }}">
+                                    <input type="hidden" id="user_email" name="user_email" value="{{ Swimmer_PROFILE['user_email'] }}">
+                                    <output id="cbn_avatar_list"></output>
+                                    <input type="submit" id="avatar_upload" onclick="return comestoarraAlert( '#uploadAvatarAction', 'warning', '' );" class='btn btn-block btn-success' value="UPLOAD NEW AVATAR">
+                                    <a id="avatar_upload_cancel" onclick="reload()" class='btn btn-block btn-danger'>CANCEL</a>
+                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-9">
+
+                    <div class="panel panel-default">
+
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
+                                <li class="active"><a href="#profile" data-toggle="tab">Swimmer Profile</a></li>
+                                {% if Swimmer_PROFILE['can_login'] %}
+                                    <li><a href="#auth" data-toggle="tab">Login Information</a></li>
+                                {% endif %}
+                                <li><a href="#appointment" data-toggle="tab">Swimmer Appointment</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+
+                                <div class="tab-pane fade in active" id="profile">
+                                    <br />
+
+                                    <form id="updateProfileAction" role="form" method="post" action="{{ urlFor( 'updateSwimmerProfileAction' ) }}">
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="first_name">First Name</label>
+                                                <input id="first_name" name="first_name" class="form-control" value="{{ Swimmer_PROFILE['first_name'] }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="last_name">Last Name</label>
+                                                <input id="last_name" name="last_name" class="form-control" value="{{ Swimmer_PROFILE['last_name'] }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="birthdate">Birthday</label>
+                                                <input id="birthdate" name="birthdate" class="form-control" value="{{ Swimmer_PROFILE['birthdate'] }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="phone">Phone</label>
+                                                <input id="phone" name="phone" class="form-control" value="{{ Swimmer_PROFILE['phone'] }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="cellphone">Cell Phone</label>
+                                                <input id="cellphone" name="cellphone" class="form-control" value="{{ Swimmer_PROFILE['cellphone'] }}">
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="gender">Gender</label>
+                                                <select name="gender" id="gender" class="form-control">
+                                                    <option value="2" {% if Swimmer_PROFILE['gender'] == '2' %}selected{% endif %}>Male</option>
+                                                    <option value="1" {% if Swimmer_PROFILE['gender'] == '1' %}selected{% endif %}>Female</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="bio">Bio</label>
+                                                <textarea id="bio" name="bio" class="form-control" rows="3">{{ Swimmer_PROFILE['bio'] }}</textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="address">Address</label>
+                                                <textarea id="address" name="address" class="form-control" rows="3">{{ Swimmer_PROFILE['address'] }}</textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
+
+                                        <div class="col-md-6">
+
+                                            <button type="submit" class="btn btn-primary" onclick="return comestoarraAlert( '#updateProfileAction', 'warning', '' );">Update Profile</button>
+
+                                        </div>
+
+                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                    </form>
+
+                                </div>
+
+                                <div class="tab-pane fade in" id="auth">
+                                    <br />
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="user_email">Email Address {% if ( user.user_id != ID and ROLE == 7 ) %}<a class="cbn-modal-link" href="#" data-toggle="modal" data-target="#changeEmail">change your email ?</a>{% endif %}</label>
+                                            <input id="user_email" class="form-control" value="{{ Swimmer_PROFILE['user_email'] }}" disabled>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <label>Username {% if ( user.user_id != ID and ROLE == 7 ) %}<a class="cbn-modal-link" href="#" data-toggle="modal" data-target="#changeUsername">change your username ?</a>{% endif %}</label>
+                                        <div class="form-group input-group">
+                                            <span class="input-group-addon">@</span>
+                                            <input type="text" class="form-control" placeholder="Username" value="{{ Swimmer_PROFILE['user_name'] }}" disabled>
+                                        </div>
+
+                                    </div>
+
+                                    {% if ( user.user_id != ID and ROLE == 7 ) %}
+
+                                    <form id="changePasswordAction" role="form" method="post" action="{{ urlFor( 'changeSwimmerPasswordAction' ) }}">
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="reset_input_password_new">Password</label>
+                                                <input id="reset_input_password_new" class="form-control" type="text"
+                                                       name="user_password_new" required autocomplete="off" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-md-6">
+
+                                            <div class="form-group">
+                                                <label for="reset_input_password_repeat">Password (again)</label>
+                                                <input id="reset_input_password_repeat" class="form-control" type="password"
+                                                       name="user_password_repeat" required autocomplete="off" />
+                                            </div>
+
+                                        </div>
+
+                                        <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
+                                        <input type="hidden" id="user_name" name="user_name" value="{{ Swimmer_PROFILE['user_name'] }}">
+
+                                        <div class="col-md-6">
+
+                                            <button type="submit" class="btn btn-danger" onclick="return comestoarraAlert( '#changePasswordAction', 'warning', '' );">Change Password</button>
+
+                                        </div>
+
+                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                    </form>
+
+                                    {% endif %}
+
+                                    {% if ( user.user_id != ID and ROLE == 7 ) %}
+
+                                        <!-- Change Email Modal -->
+                                        <div class="modal fade" id="changeEmail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                        <h4 class="modal-title" id="myModalLabel">Change Email Address : {{ Swimmer_PROFILE['user_email'] }}</h4>
+                                                    </div>
+
+                                                    <form action="{{ urlFor( 'changeSwimmerEmailAction' ) }}" method="post" role="form">
+                                                        <div class="modal-body">
+
+                                                            <div class="form-group">
+                                                                <label for="user_email">New Email Address</label>
+                                                                <input id="user_email" class="form-control" type="text" name="user_email" required>
+                                                                <p class="help-block">Please provide an valid Email Address !</p>
+                                                            </div>
+
+                                                        </div>
+                                                        <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
+                                                        <input type="hidden" id="user_name" name="user_name" value="{{ Swimmer_PROFILE['user_name'] }}">
+                                                        <div class="modal-footer">
+
+                                                            <a class="btn btn-danger" data-dismiss="modal">Close</a>
+                                                            <button type="submit" class="btn btn-success">Submit</button>
+
+                                                        </div>
+
+                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                                    </form>
+
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                        <!-- /.modal -->
+
+                                        <!-- Change Username Modal -->
+                                        <div class="modal fade" id="changeUsername" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                        <h4 class="modal-title" id="myModalLabel">Change Username : @{{ Swimmer_PROFILE['user_name'] }}</h4>
+                                                    </div>
+                                                    <form action="{{ urlFor( 'changeSwimmerUsernameAction' ) }}" method="post" role="form">
+                                                        <div class="modal-body">
+
+                                                            <div class="form-group input-group">
+                                                                <span class="input-group-addon">@</span>
+                                                                <input type="text" class="form-control" placeholder="New Username" name="user_name" required>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
+                                                        <input type="hidden" id="user_email" name="user_email" value="{{ Swimmer_PROFILE['user_email'] }}">
+                                                        <div class="modal-footer">
+
+                                                            <a class="btn btn-danger" data-dismiss="modal">Close</a>
+                                                            <button type="submit" class="btn btn-success">Submit</button>
+
+                                                        </div>
+
+                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                                    </form>
+                                                </div>
+                                                <!-- /.modal-content -->
+                                            </div>
+                                            <!-- /.modal-dialog -->
+                                        </div>
+                                        <!-- /.modal -->
+
+                                    {% endif %}
+
+                                </div>
+
+                                <div class="tab-pane fade in" id="appointment">
+                                    <br />
+
+                                    {% if ROLE == 7 %}
+                                        <a href="#" role="button" class="btn btn-default" data-toggle="modal" data-target="#addAppointment" rel="tooltip" data-placement="bottom" title="Insert New Swimmer Appointment Data to Database !"><i class="fa fa-plus"></i> Add New Appointment</a>
+                                        <br>
+                                        <hr>
+                                    {% endif %}
+
+                                    <div class="dataTable_wrapper">
+
+                                        <table class="table table-striped table-bordered table-hover" id="all-appointment">
+                                        <thead>
+                                        <tr>
+                                            <th class="cbn-table-center" width="20%">#ID</th>
+                                            <th class="cbn-table-center">Type</th>
+                                            <th class="cbn-table-center">Instructor</th>
+                                            <th class="cbn-table-center">Schedule</th>
+                                            <th class="cbn-table-center">Instructor Notes</th>
+                                            {% if ( user.user_id != ID and ROLE == 7 ) %}
+                                                <th class="cbn-table-center" width="12%">Action</th>
+                                            {% endif %}
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if Swimmer_APPOINTMENT|length > 0 %}
+                                            {% for appointment in Swimmer_APPOINTMENT %}
+                                                <tr>
+                                                    <td class="cbn-table-center" width="20%"><strong>#{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</strong><br>{% if appointment.cancelled == 1 %}<span class="label label-danger">cancelled</span>{% endif %}</td>
+                                                    <td class="cbn-table-center">{{ appointment.type }}</td>
+                                                    <td class="cbn-table-center">{{ appointment.first_name }} {{ appointment.last_name }} {% if appointment.specialties %}<a class="label label-info">{{ appointment.specialties|e }}</a>{% endif %}</td>
+                                                    <td class="cbn-table-center">
+                                                        <strong>{{ appointment.start|replace({'T': ' at '}) }}</strong>
+                                                        <br>
+                                                        {% if dom.dueDate|date('Y-m-d') > appointment.appointment_date %}
+                                                            {% if appointment.finished == 1 %}
+                                                                <span class="label label-success">finished</span>
+                                                            {% else %}
+                                                                <span class="label label-danger">expired</span>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>{{ appointment.notes_Instructor|raw }}</td>
+                                                    {% if ( user.user_id != ID and ROLE == 7 ) %}
+                                                        <td class="cbn-table-center" width="12%">
+
+                                                            {% if appointment.cancelled == 1 %}
+                                                                <a href="#" role="button" class="btn btn-warning" data-toggle="modal" data-target="#undoAppointment{{ appointment.appointment_id|e }}" rel="tooltip" data-placement="top" title="Activate Appointment Data ?"><i class="fa fa-reply"></i></a>
+                                                                {% if appointment.finished == 0 %}
+                                                                    <a href="#" role="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAppointment{{ appointment.appointment_id|e }}" rel="tooltip" data-placement="top" title="Delete Appointment Data ?"><i class="fa fa-trash"></i></a>
+                                                                {% endif %}
+                                                            {% else %}
+                                                                {% if appointment.finished == 0 %}
+                                                                    <a href="#" role="button" class="btn btn-warning" data-toggle="modal" data-target="#cancelAppointment{{ appointment.appointment_id|e }}" rel="tooltip" data-placement="top" title="Cancel Appointment Data ?"><i class="fa fa-times"></i></a>
+                                                                {% else %}
+                                                                    <span class="label label-success">FINISHED</span>
+                                                                {% endif %}
+                                                            {% endif %}
+
+                                                        </td>
+                                                    {% endif %}
+                                                </tr>
+
+                                                {% if ( user.user_id != ID and ROLE == 7 ) %}
+
+                                                    <!-- Activated Appointment Modal -->
+                                                    <div class="modal fade" id="undoAppointment{{ appointment.appointment_id|e }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                                    <h4 class="modal-title" id="myModalLabel">Activate Appointment : #{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</h4>
+                                                                </div>
+
+                                                                <form action="{{ urlFor( 'activatedSwimmerAppointmentAction' ) }}" method="post" role="form">
+
+                                                                    <div class="modal-body">
+
+                                                                        <div class="form-group">
+                                                                            <h5>Are you sure want to activated this appointment ?</h5>
+                                                                        </div>
+
+                                                                        <input type="hidden" name="appointment_id" value="{{ appointment.appointment_id|e }}">
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+
+                                                                        <a class="btn btn-danger" data-dismiss="modal">No</a>
+                                                                        <button type="submit" class="btn btn-success pull-left">Yes</button>
+
+                                                                    </div>
+
+                                                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                                                </form>
+
+                                                            </div>
+                                                            <!-- /.modal-content -->
+                                                        </div>
+                                                        <!-- /.modal-dialog -->
+                                                    </div>
+                                                    <!-- /.modal -->
+
+                                                    <!-- Cancelled Appointment Modal -->
+                                                    <div class="modal fade" id="cancelAppointment{{ appointment.appointment_id|e }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                                    <h4 class="modal-title" id="myModalLabel">Cancel Appointment : #{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</h4>
+                                                                </div>
+
+                                                                <form action="{{ urlFor( 'cancelledSwimmerAppointmentAction' ) }}" method="post" role="form">
+
+                                                                    <div class="modal-body">
+
+                                                                        <div class="form-group">
+                                                                            <h5>Are you sure want to cancelled this appointment ?</h5>
+                                                                        </div>
+
+                                                                        <input type="hidden" name="appointment_id" value="{{ appointment.appointment_id|e }}">
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+
+                                                                        <a class="btn btn-danger" data-dismiss="modal">No</a>
+                                                                        <button type="submit" class="btn btn-success pull-left">Yes</button>
+
+                                                                    </div>
+
+                                                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                                                </form>
+
+                                                            </div>
+                                                            <!-- /.modal-content -->
+                                                        </div>
+                                                        <!-- /.modal-dialog -->
+                                                    </div>
+                                                    <!-- /.modal -->
+
+                                                    <!-- Deleted Appointment Modal -->
+                                                    <div class="modal fade" id="deleteAppointment{{ appointment.appointment_id|e }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                                    <h4 class="modal-title" id="myModalLabel">Delete Appointment : #{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</h4>
+                                                                </div>
+
+                                                                <form action="{{ urlFor( 'deletedSwimmerAppointmentAction' ) }}" method="post" role="form">
+
+                                                                    <div class="modal-body">
+
+                                                                        <div class="form-group">
+                                                                            <h5>Are you sure want to deleted this appointment ?</h5>
+                                                                        </div>
+
+                                                                        <input type="hidden" name="appointment_id" value="{{ appointment.appointment_id|e }}">
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+
+                                                                        <a class="btn btn-danger" data-dismiss="modal">No</a>
+                                                                        <button type="submit" class="btn btn-success pull-left">Yes</button>
+
+                                                                    </div>
+
+                                                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                                                </form>
+
+                                                            </div>
+                                                            <!-- /.modal-content -->
+                                                        </div>
+                                                        <!-- /.modal-dialog -->
+                                                    </div>
+                                                    <!-- /.modal -->
+
+                                                {% endif %}
+
+                                            {% endfor %}
+                                        {% endif %}
+                                        </tbody>
+                                    </table>
+
+                                    </div>
+
+                                    <!-- Add New Swimmer Appointment Modal -->
+                                    <div class="modal fade" id="addAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-calendar"></i> Add New Swimmer Appointment</h4>
+                                                </div>
+
+                                                <form action="{{ urlFor( 'addSwimmerAppointmentAction' ) }}" method="post" role="form">
+                                                    <div class="modal-body">
+
+                                                        <div class="form-group">
+                                                            <label for="type">Appointment Type</label>
+                                                            <select name="type" id="type" class="form-control">
+                                                    <option value="New Swimmer Lesson">New Swimmer Lesson</option>
+                                                    <option value="30 Minute Solo">30 Minute Solo</option>
+                                                    <option value="45 Minute Solo">45 Minute Solo</option>
+                                                    <option value="45 Minute Double">45 Minute Double</option>
+                                                    <option value="Adult Private">Adult Private</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label for="Instructor_id">Instructor</label>
+                                                            <select name="Instructor_id" id="Instructor_id" class="form-control">
+                                                                <option id="select_Instructor">- Select Instructor -</option>
+                                                                {% for Instructor in ALL_Instructor %}
+                                                                    <option name="Instructor_id" id="Instructor_id" value="{{ Instructor.Instructor_id|e }}">{{ Instructor.first_name|e }} {{ Instructor.last_name|e }} - {{ Instructor.specialties|e }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+
+                                                        <div id="Instructor_time_table_ajax" class="form-group">
+                                                            <label for="timetable">Instructor Time Table</label>
+                                                            <div id="Instructor_timetable"></div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <div id="date_pick">
+                                                                <label for="appointment_date_pick">Appointment Date</label>
+                                                                <input id="appointment_date_pick" class="form-control" type="text" name="appointment_date_pick" required>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="Instructor_day_selected"></div>
+
+                                                        <div id="appointment_notes" class="form-group">
+                                                            <label for="notes">Notes</label>
+                                                            <textarea name="notes" id="notes" class="form-control" placeholder="notes" style="height: 120px;"></textarea>
+                                                        </div>
+
+                                                        <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
+                                                        <input type="hidden" name="user_email" value="{{ Swimmer_PROFILE['user_email'] }}">
+
+                                                    </div>
+                                                    <div id="appointment_footer" class="modal-footer">
+
+                                                        <a class="btn btn-danger" data-dismiss="modal">Cancel</a>
+                                                        <button type="submit" class="btn btn-success pull-left">Submit</button>
+
+                                                    </div>
+
+                                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                                </form>
+
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                    <!-- /.modal -->
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+        {% else %}
+
+                <!-- /.row -->
+                <div class="col-lg-12" style="padding-top: 10px;">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            SORRY !
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <p>Sorry, You are not allowed to be here !</p>
+                            <a class="btn btn-default btn-lg btn-block" href="{{ urlFor( 'dashboard' ) }}">Back to Dashboard</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+            {% endif %}
+
+    </div><!-- /.container-fluid -->
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+
+    {{  SCRIPT|raw }}
+
+    <script type="text/javascript">
+
+        $('.row').tooltip({
+            selector: "[rel=tooltip]",
+            container: "body"
+        })
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function handleFileSelect( evt ) {
+
+                var files = evt.target.files;
+                for (var i = 0, f; f = files[i]; i++) {
+
+                    if ( ! f.type.match('image.*') ) {
+
+                        continue;
+
+                    }
+                    var reader = new FileReader();
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            $('#avatar_button').hide();
+                            $('#avatar_file').hide();
+                            $('#avatar_upload').show();
+                            $('#avatar_upload_cancel').show();
+                            var span = document.createElement('span');
+                            span.innerHTML = ['<p align="center"><img class="uploadThumb" src="', e.target.result,
+                                '" title="', escape(theFile.name), '"/></p>'].join('');
+                            document.getElementById('cbn_avatar_list').insertBefore(span, null);
+                        };
+                    })(f);
+                    reader.readAsDataURL(f);
+
+                }
+
+            }
+
+            $('#avatar_upload').hide();
+            $('#avatar_upload_cancel').hide();
+            document.getElementById('avatar_file').addEventListener('change', handleFileSelect, false);
+
+        });
+    </script>
+
+    <script src="{{ GLOBAL_COMPONENTS }}datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="{{ GLOBAL_COMPONENTS }}datatables/media/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('#all-appointment').DataTable({
+                "responsive": true,
+                "stateSave": true
+            });
+
+        });
+    </script>
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="{{ GLOBAL_COMPONENTS }}jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+
+            $('.cbn-timepicker').timepicker({
+                hourMin: 8,
+                hourMax: 21
+            });
+
+        });
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+
+            $("#Instructor_time_table_ajax").hide();
+            $("#date_pick").hide();
+            $("#time_pick").hide();
+            $("#appointment_notes").hide();
+            $("#appointment_footer").hide();
+
+            $("#Instructor_id").change(function(){
+                $("#select_Instructor").hide();
+                $("#Instructor_time_table_ajax").show();
+                $("#date_pick").show().val('');
+                $("#appointment_notes").show();
+                $("#appointment_footer").show();
+                $("#Instructor_day_selected").hide().val('');
+                var Instructor_id=$("#Instructor_id").val();
+                $.ajax({
+                    type: "post",
+                    url: "{{ urlFor( 'SwimmerAppointmentInstructorTimeTable' ) }}",
+                    data: "Instructor_id=" + Instructor_id,
+                    success:function(data){
+                        $("#Instructor_timetable").html(data);
+                    }
+                });
+            });
+
+            $(function() {
+                var dateToday = new Date();
+                $( "#appointment_date_pick" ).datepicker({
+                    dateFormat: 'yy-mm-dd',
+                    changeMonth: true,
+                    changeYear: true,
+                    minDate: dateToday,
+                    yearRange: '{{ "now"|date("Y") }}:{{ "now"|date("Y") + 1 }}',
+                    onSelect: function() {
+                        var date_appointment_selected = $(this).datepicker('getDate');
+                        var day_parse = $.datepicker.formatDate('DD', date_appointment_selected);
+//                        alert( day_parse.toLowerCase() );
+//                        if ( day_parse.toLowerCase() == "sunday" ) {
+//                            $("#time_pick").show();
+//                            $("#appointment_notes").show();
+//                        } else {
+//                            $("#time_pick").hide();
+//                            $("#appointment_notes").show();
+//                            $("#appointment_time_pick").val('');
+//                        }
+                        var Instructor_id = $("#Instructor_id").val();
+                        var appointment_date_pick = $("#appointment_date_pick").val();
+                        $("#Instructor_day_selected").show();
+                        $.ajax({
+                            type: "post",
+                            url: "{{ urlFor( 'SwimmerAppointmentInstructorDayTimeTable' ) }}",
+                            data: { Instructor_id: Instructor_id, day_parse: day_parse.toLowerCase(), appointment_date_pick: appointment_date_pick },
+                            success:function(data){
+                                $("#Instructor_day_selected").html(data);
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+        $(function() {
+            $( "#birthdate" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1940:{{ "now"|date("Y") }}'
+            });
+        });
+    </script>
+
+    <script src="{{ GLOBAL_COMPONENTS }}gritter/js/jquery.gritter.min.js" type="text/javascript"></script>
+    {% if errors %}
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ errors }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+    {% endif %}
+
+    {% if flash.error %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.error }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.info %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Information !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.info }}</i>",
+                class_name: 'gritter-facebook gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.success %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Congratulations !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.success }}</i>",
+                class_name: 'gritter-success gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+{% endblock %}

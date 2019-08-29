@@ -1,0 +1,51 @@
+{% extends 'Backend/Content/Auth/Base.twig' %}
+
+{% block content %}
+
+    {% if APP_LOGO != "" %}
+
+        <div align="center" style="padding-top: 40px;">
+
+            <img src="{{ PUBLIC_DIR }}logo/{{ APP_LOGO }}" alt="" width="100px;">
+
+        </div>
+
+    {% endif %}
+
+    <div class="form-login">
+
+        <h1>Secure Login</h1>
+
+        <form method="post" action="{{ LOGIN_ACTION }}">
+
+            <p>
+                <label for="login">Username or email</label>
+                <input type="text" name="user_name" placeholder="Username or email" required>
+            </p>
+            <p>
+                <label for="password">Password</label>
+                <input type="password" name='user_password' placeholder="Password" required>
+            </p>
+
+            <p>
+                <input type="checkbox" name="set_remember_me_cookie"  title="remember"/>
+                <small>Remember me for 2 weeks</small>
+            </p>
+
+            <br>
+
+            <p>
+                <input type="submit" name="submit" value="Continue">
+            </p>
+
+            <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+            <br>
+            <div id="auth-link">
+                <a class="link" href="{{ SIGNUP_LINK }}">Register</a> - <a class="link" href="{{ FORGOT_LINK }}">Forgot Password ?</a>
+            </div>
+        </form>​
+
+    </div>
+    
+{% endblock %}

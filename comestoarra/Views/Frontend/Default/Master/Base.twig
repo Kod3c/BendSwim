@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<HEAD>
+    {% block head %}
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="description" content="{{ META_DESC }}" />
+        <meta name="keywords" content="{{ META_KEY }}" />
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="{{ BOOTSTRAP_COMPONENT_CSS }}" type="text/css" />
+        <link rel="shortcut icon" href="{% if APP_FAVICON != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_FAVICON }} {% else %} {{ DEFAULT_FAVICON }} {% endif %}">
+        <style>
+            @import url(https://fonts.googleapis.com/css?family=Raleway:400,500,700|Open+Sans:800);
+            *, *:after, *:before { -webkit-box-sizing: border-box; box-sizing: border-box; }
+            .clearfix:before, .clearfix:after { content: ''; display: table; }
+            .clearfix:after { clear: both; }
+            body {
+                background: #fff;
+                color: #333;
+                font-weight: 500;
+                font-family: 'Raleway', Arial, sans-serif;
+            }
+            a {
+                color: #e06084;
+                text-decoration: none;
+                outline: none;
+            }
+            a:hover, a:focus{
+                color: #ac3557;
+            }
+            .text {
+                fill: none;
+                stroke-width: 6;
+                stroke-linejoin: round;
+                stroke-dasharray: 70 330;
+                stroke-dashoffset: 0;
+                -webkit-animation: stroke 6s infinite linear;
+                animation: stroke 6s infinite linear; }
+            .text:nth-child(5n + 1) {
+                stroke: #F2385A;
+                -webkit-animation-delay: -1.2s;
+                animation-delay: -1.2s; }
+            .text:nth-child(5n + 2) {
+                stroke: #F5A503;
+                -webkit-animation-delay: -2.4s;
+                animation-delay: -2.4s; }
+            .text:nth-child(5n + 3) {
+                stroke: #E9F1DF;
+                -webkit-animation-delay: -3.6s;
+                animation-delay: -3.6s; }
+            .text:nth-child(5n + 4) {
+                stroke: #56D9CD;
+                -webkit-animation-delay: -4.8s;
+                animation-delay: -4.8s; }
+            .text:nth-child(5n + 5) {
+                stroke: #3aa1bf;
+                -webkit-animation-delay: -6s;
+                animation-delay: -6s; }
+
+            @-webkit-keyframes stroke {
+                100% {
+                    stroke-dashoffset: -400; } }
+            @keyframes stroke {
+                100% {
+                    stroke-dashoffset: -400; } }
+            /* Other stuff */
+            html,
+            body {
+                height: 100%; }
+
+            body {
+                background: #222;
+                color: #fff; }
+
+            .content {
+                font: 800 14.5em/1  'Open Sans', Impact; }
+
+            svg {
+                width: 50%;
+                padding: 50px 0 0 0;
+                margin: 0 auto;
+                display: block;
+                text-transform: uppercase; }
+        </style>
+    {% endblock %}
+</HEAD>
+<BODY>
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+    <script src="{{ JQUERY_COMPONENT }}" type="text/javascript"></script>
+    <script src="{{ BOOTSTRAP_COMPONENT_JS }}" type="text/javascript"></script>
+    <!--[if IE]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+{% endblock %}
+</BODY>
+</html>

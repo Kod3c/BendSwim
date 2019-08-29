@@ -1,0 +1,308 @@
+/* the norm */
+#gritter-notice-wrapper {
+	position:fixed;
+	top:20px;
+	right:20px;
+	width:301px;
+	z-index:9999;
+}
+#gritter-notice-wrapper.top-left {
+    left: 20px;
+    right: auto;
+}
+#gritter-notice-wrapper.bottom-right {
+    top: auto;
+    left: auto;
+    bottom: 20px;
+    right: 20px;
+}
+#gritter-notice-wrapper.bottom-left {
+    top: auto;
+    right: auto;
+    bottom: 20px;
+    left: 20px;
+}
+.gritter-item-wrapper {
+	position:relative;
+	margin:0 0 10px 0;
+	background:url('../images/ie-spacer.gif'); /* ie7/8 fix */ 
+}
+.gritter-top {
+	background:url(../images/gritter.png) no-repeat left -30px;
+	height:10px;
+}
+.hover .gritter-top {
+	background-position:right -30px;
+}
+.gritter-bottom {
+	background:url(../images/gritter.png) no-repeat left bottom;
+	height:8px;
+	margin:0;
+}
+.hover .gritter-bottom {
+	background-position: bottom right;
+}
+.gritter-item {
+	display:block;
+	background:url(../images/gritter.png) no-repeat left -40px;
+	color:#eee;
+	padding:2px 11px 8px 11px;
+	font-size: 11px;
+	font-family:verdana;
+}
+.hover .gritter-item {
+	background-position:right -40px;
+}
+.gritter-item p {
+	padding:0;
+	margin:0;
+	word-wrap:break-word;
+}
+.gritter-close {
+	display:none;
+	position:absolute;
+	top:5px;
+	left:3px;
+	background:url(../images/gritter.png) no-repeat left top;
+	cursor:pointer;
+	width:30px;
+	height:30px;
+	text-indent:-9999em;
+}
+.gritter-title {
+	font-size:14px;
+	font-weight:bold;
+	padding:0 0 7px 0;
+	display:block;
+	text-shadow:1px 1px 0 #000; /* Not supported by IE :( */
+}
+.gritter-image {
+	width:48px;
+	height:48px;
+	float:left;
+}
+.gritter-with-image,
+.gritter-without-image {
+	padding:0;
+}
+.gritter-with-image {
+	width:220px;
+	float:right;
+}
+/* for the light (white) version of the gritter notice */
+.gritter-light .gritter-item,
+.gritter-light .gritter-bottom,
+.gritter-light .gritter-top,
+.gritter-light .gritter-close {
+    background-image: url(../images/gritter-light.png);
+    color: #222;
+}
+.gritter-light .gritter-title {
+    text-shadow: none;
+}
+#gritter-notice-wrapper {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	width: 301px;
+	z-index: 9999;
+}
+.gritter-item-wrapper {
+	position: relative;
+	margin: 0 0 10px 0;
+	padding: 0;
+	background: none;
+}
+.gritter-top,
+.gritter-bottom {
+	display: none;
+}
+.gritter-item {
+	background: rgba(0, 0, 0, 0.8);
+	border: 1px solid rgba(0, 0, 0, 0.8);
+	color: white;
+	padding: 10px 15px;
+	font-size: 12px;
+	font-family: inherit;
+	-webkit-box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.1);
+}
+.gritter-item p {
+	padding: 0 20px 0 0;
+}
+.gritter-close {
+	display: inline !important;
+	top: 6px;
+	left: auto;
+	right: 5px;
+	background: none;
+	filter: alpha(opacity=20);
+	opacity: .2;
+}
+.gritter-close:after {
+	width: 100%;
+	height: 100%;
+	color: white;
+	content: '×';
+	position: absolute;
+	top: 0;
+	left: 0;
+	text-indent: 0;
+	line-height: 26px;
+	text-align: center;
+	font-size: 21px;
+	font-weight: 800;
+	text-shadow: 0 1px 0 black;
+}
+.gritter-close:hover {
+	filter: alpha(opacity=50);
+	opacity: .5;
+}
+.gritter-title {
+	text-shadow: none;
+}
+.gritter-image {
+	margin-left: -5px;
+}
+.gritter-icon .gritter-title {
+	padding: 0 20px 0 40px;
+}
+.gritter-icon .gritter-title i {
+	position: absolute;
+	left: 10px;
+	top: 5px;
+	font-size: 40px;
+	width: 40px;
+	text-align: center;
+	display: block;
+}
+.gritter-icon .gritter-item p {
+	padding: 0 20px 0 40px;
+}
+.gritter-light .gritter-item {
+	background: white;
+	color: #3d3f42;
+	border: 1px solid #d1d4d7;
+}
+.gritter-light .gritter-close {
+	background: white;
+}
+.gritter-light .gritter-close:after {
+	color: #000;
+	text-shadow: 0 1px 0 #fff;
+}
+.gritter-default .gritter-item {
+	background: #f8f9fa;
+	color: #3d3f42;
+	border: 1px solid #d1d4d7;
+	-webkit-box-shadow: inset 0 0 1px 1px #ffffff, 0 2px 1px -1px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: inset 0 0 1px 1px #ffffff, 0 2px 1px -1px rgba(0, 0, 0, 0.1);
+	box-shadow: inset 0 0 1px 1px #ffffff, 0 2px 1px -1px rgba(0, 0, 0, 0.1);
+}
+.gritter-default .gritter-close:after {
+	color: #3d3f42;
+	text-shadow: none;
+}
+.gritter-primary .gritter-item {
+	background: #20a8d8;
+	color: white;
+	border: 1px solid #20a8d8;
+}
+.gritter-success .gritter-item {
+	background: #4dbd74;
+	color: white;
+	border: 1px solid #4dbd74;
+}
+.gritter-info .gritter-item {
+	background: #63c2de;
+	color: white;
+	border: 1px solid #63c2de;
+}
+.gritter-danger .gritter-item {
+	background: #f86c6b;
+	color: white;
+	border: 1px solid #f86c6b;
+}
+.gritter-warning .gritter-item {
+	background: #f8cb00;
+	color: white;
+	border: 1px solid #f8cb00;
+}
+.gritter-primary .gritter-close,
+.gritter-success .gritter-close,
+.gritter-info .gritter-close,
+.gritter-danger .gritter-close,
+.gritter-warning .gritter-close {
+	opacity: 1;
+}
+.gritter-primary .gritter-close:after,
+.gritter-success .gritter-close:after,
+.gritter-info .gritter-close:after,
+.gritter-danger .gritter-close:after,
+.gritter-warning .gritter-close:after {
+	color: white;
+	text-shadow: none;
+}
+.gritter-facebook .gritter-item {
+	background: #3b5998;
+	color: white;
+	border: 1px solid #3b5998;
+}
+.gritter-twitter .gritter-item {
+	background: #00aced;
+	color: white;
+	border: 1px solid #00aced;
+}
+.gritter-linkedin .gritter-item {
+	background: #4875b4;
+	color: white;
+	border: 1px solid #4875b4;
+}
+.gritter-tumblr .gritter-item {
+	background: #32506d;
+	color: white;
+	border: 1px solid #32506d;
+}
+.gritter-google-plus .gritter-item {
+	background: #bb4b39;
+	color: white;
+	border: 1px solid #bb4b39;
+}
+.gritter-instagram .gritter-item {
+	background: #517fa4;
+	color: white;
+	border: 1px solid #517fa4;
+}
+.gritter-pinterest .gritter-item {
+	background: #cb2027;
+	color: white;
+	border: 1px solid #cb2027;
+}
+.gritter-facebook .gritter-close,
+.gritter-twitter .gritter-close,
+.gritter-linkedin .gritter-close,
+.gritter-tumblr .gritter-close,
+.gritter-google-plus .gritter-close,
+.gritter-cbn-error .gritter-close,
+.gritter-instagram .gritter-close,
+.gritter-pinterest .gritter-close {
+	opacity: 1;
+}
+.gritter-facebook .gritter-close:after,
+.gritter-twitter .gritter-close:after,
+.gritter-linkedin .gritter-close:after,
+.gritter-tumblr .gritter-close:after,
+.gritter-google-plus .gritter-close:after,
+.gritter-cbn-errors .gritter-close:after,
+.gritter-instagram .gritter-close:after,
+.gritter-pinterest .gritter-close:after {
+	color: white;
+	text-shadow: none;
+}
+
+.gritter-alert .gritter-item {
+	background: #d20c0c;
+	color: white;
+	border: 1px solid #d20c0c;
+}

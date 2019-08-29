@@ -1,0 +1,415 @@
+{% extends 'Backend/Master/Base.twig' %}
+
+{% block title %}{{ NAME }} - {{ TITLE }}{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+{% endblock %}
+
+{% block content %}
+
+    {% if error %}
+
+        {{ error }}
+
+    {% endif %}
+
+    <div class="container{% if CONTENT_FLUID %}-fluid{% endif %}">
+
+        <!-- Page Heading -->
+        <div class="row page-header">
+            <div class="col-lg-12">
+                {% if PROVIDER == 'DEFAULT' %}
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-group"></i> <a href="{{ urlFor( 'users' ) }}"> User Manager</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-user"></i> User Profile
+                    </li>
+                </ol>
+                {% endif %}
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-3">
+
+                <div class="panel panel-default">
+                    <div class="modal-body">
+
+                        {% if USER_PROFILE['user_has_avatar'] %}
+                            <p align="center"><img src="{{ HUGE_PATH_AVATARS }}{{ USER_PROFILE['user_id'] }}.jpg" alt="" width="200px"></p>
+                        {% else %}
+                            <p align="center"><img src="{{ HUGE_PATH_AVATARS }}default.jpg" alt="" width="200px"></p>
+                        {% endif %}
+
+                        <p align="center">
+                        {% if USER_PROFILE['session_id'] != NULL %}
+                            <span class="label label-success">online</span>
+                        {% else %}
+                            <span class="label label-danger">offline</span>
+                        {% endif %}
+
+                        {% if USER_PROFILE['user_account_type'] == 7 %}
+                            <span class="label label-success">Root</span>&nbsp;
+                        {% endif %}
+                        <span class="label label-primary">{{ USER_PROFILE['role_name'] }}</span>
+
+                        </p>
+
+                    </div>
+                    {% if PROVIDER == 'DEFAULT' %}
+                    <div class="modal-footer">
+
+                        <div class="col-md-12">
+
+                            {% if ( USER_PROFILE['user_id'] != ID ) %}
+                                <a href="#" role="button" class="btn btn-block btn-primary" data-toggle="modal" data-target="#composeMessages" rel="tooltip" data-placement="right" title=""><i class="fa fa-paper-plane-o"></i> SEND MESSAGE</a>
+                            {% else %}
+                                <a href="{{ urlFor( 'myProfile' ) }}" class="btn btn-block btn-primary"><i class="fa fa-fw fa-user"></i> Go to my profile</a>
+                            {% endif %}
+
+                            {% if ( USER_PROFILE['user_id'] != ID and PROVIDER == 'DEFAULT' ) %}
+                            <!-- COMPOSE MESSAGE MODAL -->
+                            <div class="modal fade" id="composeMessages" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="text-align: center;">
+                                            <h4 class="modal-title" id="myModalLabel"><i class="fa fa-paper-plane-o"></i> Compose New Messages</h4>
+                                        </div>
+                                        <form role="form" method="post" action="{{ urlFor( 'composeMessageFromProfileAction' ) }}">
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">Subject:</span>
+                                                        <input name="mail_title" id="mail_title" type="text" class="form-control" placeholder=" Mail Title" value="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <textarea name="mail_content" id="mail_content" class="form-control" placeholder="Mail Content" style="height: 120px;" required></textarea>
+                                                </div>
+
+                                                <input type="hidden" name="sender_id" value="{{ ID }}">
+                                                <input type="hidden" name="receiver_id" value="{{ USER_PROFILE['user_id'] }}">
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
+
+                                                <button type="submit" class='btn btn-success pull-left'><i class="fa fa-paper-plane-o"></i> Compose Messages</button>
+                                            </div>
+
+                                            <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+
+                                        </form>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="col-lg-9">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-body">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
+                            <li class="active"><a href="#profile" data-toggle="tab">User Profile</a></li>
+                            {% if ROLE == 7 %}
+                            <li><a href="#auth" data-toggle="tab">User Login Information</a></li>
+                            <li><a href="#activities" data-toggle="tab">User Activities</a></li>
+                            {% endif %}
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+
+                            <div class="tab-pane fade in active" id="profile">
+                                <br />
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="first_name">First Name</label>
+                                            <input id="first_name" class="form-control" value="{{ USER_PROFILE['first_name'] }}" readonly>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="last_name">Last Name</label>
+                                            <input id="last_name" class="form-control" value="{{ USER_PROFILE['last_name'] }}" readonly>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="birth_date">Birthday</label>
+                                            <input id="birth_date" class="form-control" value="{{ USER_PROFILE['birth_date'] }}" readonly>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input id="phone" class="form-control" value="{{ USER_PROFILE['phone'] }}" readonly>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="bio">Bio</label>
+                                            <textarea id="bio" class="form-control" rows="3" readonly>{{ USER_PROFILE['bio'] }}</textarea>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label for="address">Address</label>
+                                            <textarea id="address" class="form-control" rows="3" readonly>{{ USER_PROFILE['address'] }}</textarea>
+                                        </div>
+
+                                    </div>
+
+                            </div>
+
+                            {% if ROLE == 7 %}
+
+                            <div class="tab-pane fade in" id="auth">
+                                <br />
+
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="user_email">Email Address</label>
+                                        <input type="text" id="user_email" class="form-control" value="{{ USER_PROFILE['user_email'] }}" disabled>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+
+                                    <label>Username</label>
+                                    <div class="form-group input-group">
+                                        <span class="input-group-addon">@</span>
+                                        <input type="text" class="form-control" placeholder="Username" value="{{ USER_PROFILE['user_name'] }}" disabled>
+                                    </div>
+
+                                </div>
+                                
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="user_failed_logins">Failed Login</label>
+                                        <input type="text" id="user_failed_logins" class="form-control" value="{{ USER_PROFILE['user_failed_logins'] }}" disabled>
+                                    </div>
+
+                                </div>
+                                
+                                <div class="col-md-6">
+
+                                    <div class="form-group">
+                                        <label for="user_last_failed_login">Last Failed Login</label>
+                                        <input type="text" id="user_last_failed_login" class="form-control" value="{{ USER_PROFILE['user_last_failed_login'] }}" disabled>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane fade in" id="activities">
+                                <br />
+                                <div class="cbn-activities-panel panel panel-default">
+                                    <div class="panel-body">
+                                        <ul class="cbn-activities">
+
+                                            {% if USER_AUDIT %}
+
+                                                {% for audit in USER_AUDIT %}
+
+                                                    <li class="left clearfix">
+                                                        <span class="cbn-activities-img pull-left">
+                                                            {% if USER_PROFILE['user_has_avatar'] %}
+
+                                                                <img src="{{ HUGE_PATH_AVATARS }}{{ USER_PROFILE['user_id'] }}.jpg" width="50px" class="img-circle" />
+
+                                                            {% else %}
+
+                                                                <img src="{{ HUGE_PATH_AVATARS }}default.jpg" width="50px" class="img-circle" />
+
+                                                            {% endif %}
+                                                        </span>
+                                                        <div class="cbn-activities-body clearfix">
+                                                            <div class="header">
+                                                                <strong class="primary-font">{{ USER_PROFILE['user_name'] }}</strong>
+                                                                <small class="pull-right text-muted">
+                                                                    <i class="fa fa-clock-o fa-fw"></i> {{ audit.created_date }}
+                                                                </small>
+                                                            </div>
+                                                            <p>
+                                                                {{ audit.content_audit|e }}
+                                                            </p>
+                                                        </div>
+                                                    </li>
+
+                                                {% endfor %}
+
+                                            {% endif %}
+
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+    </div><!-- /.container-fluid -->
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+
+    {{  SCRIPT|raw }}
+
+    <script type="text/javascript">
+
+        $('.row').tooltip({
+            selector: "[data-toggle=tooltip]",
+            container: "body"
+        })
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            function handleFileSelect( evt ) {
+
+                var files = evt.target.files;
+                for (var i = 0, f; f = files[i]; i++) {
+
+                    if ( ! f.type.match('image.*') ) {
+
+                        continue;
+
+                    }
+                    var reader = new FileReader();
+                    reader.onload = (function(theFile) {
+                        return function(e) {
+                            $('#avatar_button').hide();
+                            $('#avatar_file').hide();
+                            $('#avatar_upload').show();
+                            $('#avatar_upload_cancel').show();
+                            var span = document.createElement('span');
+                            span.innerHTML = ['<p align="center"><img class="uploadThumb" src="', e.target.result,
+                                '" title="', escape(theFile.name), '"/></p>'].join('');
+                            document.getElementById('cbn_avatar_list').insertBefore(span, null);
+                        };
+                    })(f);
+                    reader.readAsDataURL(f);
+
+                }
+
+            }
+
+            $('#avatar_upload').hide();
+            $('#avatar_upload_cancel').hide();
+            document.getElementById('avatar_file').addEventListener('change', handleFileSelect, false);
+
+        });
+    </script>
+
+    <script src="{{ GLOBAL_COMPONENTS }}gritter/js/jquery.gritter.min.js" type="text/javascript"></script>
+    {% if errors %}
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ errors }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+    {% endif %}
+
+    {% if flash.error %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.error }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.info %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Information !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.info }}</i>",
+                class_name: 'gritter-facebook gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.success %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Congratulations !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.success }}</i>",
+                class_name: 'gritter-success gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+{% endblock %}

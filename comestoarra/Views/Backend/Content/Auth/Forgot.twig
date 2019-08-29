@@ -1,0 +1,46 @@
+{% extends 'Backend/Content/Auth/Base.twig' %}
+
+{% block content %}
+
+    {% if APP_LOGO != "" %}
+
+        <div align="center" style="padding-top: 40px;">
+
+            <img src="{{ PUBLIC_DIR }}logo/{{ APP_LOGO }}" alt="" width="100px;">
+
+        </div>
+
+    {% endif %}
+    <div class="form-login">
+        <form method="post" action="{{ FORGOT_ACTION }}">
+        <h1>Recover Password</h1>
+        <p>
+            <label for="login">Username or email</label>
+            <input type="text" name="user_name_or_email" placeholder="Enter your username or email" required>
+        </p>
+
+        <p>
+
+            <img id="captchaImage" src="{{ CAPTCHA }}" width="100%" style="margin-top: 10px;"/>
+
+            <input type="text" name="captcha" placeholder="Please enter above characters" required/>
+
+        </p>
+
+        <p align="center" style="margin: 10px;">Enter Captcha or <a class="link" href="javascript:void(0)" onclick="document.getElementById('captchaImage').src =
+
+                    '{{ CAPTCHA }}&morerandom=' + Math.floor(Math.random() * 10000);"><span class="fa fa-refresh"></span> Refresh</a>
+        </p>
+
+        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+        <p>
+            <input type="submit" name="submit" value="Recover">
+        </p>
+        <br>
+        <div id="auth-link">
+            <a class="link" href="{{ SIGNUP_LINK }}">Register</a> - <a class="link" href="{{ LOGIN_LINK }}">Secure Login</a>
+        </div>
+    </form>​
+    </div>
+
+{% endblock %}

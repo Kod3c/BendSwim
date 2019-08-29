@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "0.12"
+before script:
+  - npm install_guide -g gulp
+  - npm install_guide -g bower
+  - bower install_guide
+script: gulp test
