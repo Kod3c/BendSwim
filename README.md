@@ -1,4 +1,4 @@
-<img src='https://img.shields.io/badge/Build-Passing-brightgreen'><img src='https://img.shields.io/github/license/Kod3c/BendSwim'><img src='https://img.shields.io/github/issues/Kod3c/BendSwim'>
+<img src='https://img.shields.io/badge/Build-Passing-brightgreen'> <img src='https://img.shields.io/github/license/Kod3c/BendSwim'> <img src='https://img.shields.io/github/issues/Kod3c/BendSwim'>
 
 
 # Swim Lesson Appointment System v.2.2
