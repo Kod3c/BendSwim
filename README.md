@@ -1,4 +1,4 @@
-<img src='https://img.shields.io/badge/Build-Almost%20Passing-orange'>
+<img src='https://img.shields.io/badge/Build-Passing-green'>
 <img src='https://img.shields.io/github/issues/Kod3c/BendSwim'>
 
 
