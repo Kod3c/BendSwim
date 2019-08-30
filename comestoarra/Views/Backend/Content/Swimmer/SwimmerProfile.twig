@@ -211,7 +211,7 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group">
-                                            <label for="user_email">Email Address {% if ( user.user_id != ID and ROLE == 7 ) %}<a class="cbn-modal-link" href="#" data-toggle="modal" data-target="#changeEmail">change your email ?</a>{% endif %}</label>
+                                            <label for="user_email">Email Address {% if ( user.user_id != ID and ROLE == 7 ) %}{% endif %}</label>
                                             <input id="user_email" class="form-control" value="{{ Swimmer_PROFILE['user_email'] }}" disabled>
                                         </div>
 
