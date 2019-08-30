@@ -2,9 +2,19 @@
 <img src='https://img.shields.io/github/issues/Kod3c/BendSwim'>
 
 
-# Swim Lesson Appointment System v.2.1
+# Swim Lesson Appointment System v.2.2
 
-## CHANGELOG v.1.1
+## CHANGELOG v.2.2
+
+1. Got rid of mentions of "Appointments"
+     - Replaced with "Lessons"
+
+2. Repaired Email bug by removing emails entirely. Admin now creates/manages accounts.
+
+3. Cleaned up code reguarding Users and account creation.
+
+
+## CHANGELOG v.2.1
 
 - [FIXED] user last_failed_login count and set last_failed_login date
 - [FIXED] appointment date cannot be blank - Appointment Form @ Dashboard
