@@ -15,6 +15,15 @@ use Models\Entity\Swimmer;
 use Models\Entity\Role;
 use Slim\Slim;
 
+
+$file = 'this.txt';
+// Open the file to get existing content
+$current = file_get_contents($file);
+// Append a new person to the file
+$current .= "\n Recived \n";
+// Write the contents back to the file
+file_put_contents($file, $current);
+
 class RegistrationModel
 {
 
@@ -689,22 +698,44 @@ class RegistrationModel
         $body = HugeConfig::get('EMAIL_VERIFICATION_CONTENT') . BASE_DIR . HugeConfig::get('EMAIL_VERIFICATION_URL')
             . '/' . urlencode( $user_id ) . '/' . urlencode( $user_activation_hash );
 
-        $mail = new MailHelper();
-        $mail_sent = $mail->sendMail ( $user_email, HugeConfig::get('EMAIL_VERIFICATION_FROM_EMAIL' ),
-            HugeConfig::get('EMAIL_VERIFICATION_FROM_NAME'), HugeConfig::get('EMAIL_VERIFICATION_SUBJECT'), $body
-        );
+		$from_name = 'Bend Swim School';
+		$from_email = 'bss@wyattcarrell.com';
+		
+        $headers = "From: $from_name <$from_email>" . PHP_EOL;
+        $headers .= "Reply-To: $from_email" . PHP_EOL;
+        $headers .= "MIME-Version: 1.0" . PHP_EOL;
+        $headers .= "Content-type: text/plain; charset=utf-8" . PHP_EOL;
+        $headers .= "Content-Transfer-Encoding: quoted-printable" . PHP_EOL;
 
-        if ( $mail_sent ) :
 
-            Slim::getInstance()->flash( 'success', LanguageHelper::get('FEEDBACK_VERIFICATION_MAIL_SENDING_SUCCESSFUL') );
-            return true;
+$file = 'this.txt';
+// Open the file to get existing content
+$current = file_get_contents($file);
+// Append a new person to the file
+$current .= "\n Recived 2\n";
+// Write the contents back to the file
+file_put_contents($file, $current);
+        
 
-        else :
+$success = mail ( $user_email, $subject, $body, $headers );
+if (!$success) {
+	
+	
+    $errorMessage = error_get_last()['message'];
+	
+$file = 'this.txt';
+// Open the file to get existing content
+$current = file_get_contents($file);
+// Append a new person to the file
+$current .= "\n".$errorMessage."\n";
+// Write the contents back to the file
+file_put_contents($file, $current);
+	
+	
+}
 
-            Slim::getInstance()->flash( 'error', LanguageHelper::get('FEEDBACK_VERIFICATION_MAIL_SENDING_ERROR') . $mail->getError() );
-            return false;
 
-        endif;
+
     }
 
     public static function verifyNewUser( $user_id, $user_activation_verification_code )

@@ -262,18 +262,17 @@
                                                 <td class="cbn-table-center" width="50%">
                                                     {% if Instructor.avatar %}
                                                         {% if PROVIDER == 'DEFAULT'%}
-                                                            <a href="{{ urlFor( 'Instructors' ) }}{{ Instructor.Instructor_id }}"><img src="{{ PUBLIC_DIR }}avatars/Instructors/{{ Instructor.avatar }}" alt="" width="200px"></a>
+                                                            
                                                         {% else %}
-                                                            <img src="{{ PUBLIC_DIR }}avatars/Instructors/{{ Instructor.avatar }}" alt="" width="200px">
+                                                            
                                                         {% endif %}
                                                     {% else %}
                                                         {% if PROVIDER == 'DEFAULT'%}
-                                                            <a href="{{ urlFor( 'Instructors' ) }}{{ Instructor.Instructor_id }}"><img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="200px"></a>
+                                                            
                                                         {% else %}
-                                                            <img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="200px">
+                                                            
                                                         {% endif %}
                                                     {% endif %}
-                                                    <hr>
                                                     <strong>#{{ NAME }} - {{ Instructor.birthdate|replace({'-': ''}) }} - DDS{{ Instructor.Instructor_id|e }}</strong>
                                                     <br>
                                                     <strong>
@@ -705,18 +704,17 @@
                                                 <td class="cbn-table-center">
                                                     {% if appointment.Swimmer_avatar %}
                                                         {% if PROVIDER == 'DEFAULT'%}
-                                                            <a href="{{ urlFor( 'Swimmers' ) }}{{ appointment.Swimmer_id|e }}"><img src="{{ PUBLIC_DIR }}avatars/Swimmers/{{ appointment.Swimmer_avatar }}" alt="" width="80px"></a>
+                                                            
                                                         {% else %}
-                                                            <img src="{{ PUBLIC_DIR }}avatars/Swimmers/{{ appointment.Swimmer_avatar }}" alt="" width="80px">
+                                                            
                                                         {% endif %}
                                                     {% else %}
                                                         {% if PROVIDER == 'DEFAULT'%}
-                                                            <a href="{{ urlFor( 'Swimmers' ) }}{{ appointment.Swimmer_id|e }}"><img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="80px"></a>
+                                                            
                                                         {% else %}
-                                                            <img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="80px">
+                                                            
                                                         {% endif %}
                                                     {% endif %}
-                                                    <hr>
                                                     {% if PROVIDER == 'DEFAULT'%}
                                                         <strong>#{{ NAME }} - {{ appointment.Swimmer_birthdate|replace({'-': ''}) }} - P{{ appointment.Swimmer_id|e }}</strong> - <strong><a href="{{ urlFor( 'Swimmers' ) }}{{ appointment.Swimmer_id|e }}">{% if appointment.Swimmer_lastname %}{{ appointment.Swimmer_lastname|e }}, {% endif %}{{ appointment.Swimmer_firstname|e }}</a></strong>
                                                     {% else %}
@@ -934,11 +932,10 @@
                                                     <tr>
                                                         <td class="cbn-table-center">
                                                             {% if appointment.Instructor_avatar %}
-                                                                <img src="{{ PUBLIC_DIR }}avatars/Instructors/{{ appointment.Instructor_avatar }}" alt="" width="200px">
+                                                                
                                                             {% else %}
-                                                                <img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="200px">
+                                                                
                                                             {% endif %}
-                                                            <hr>
                                                             <strong>
                                                                 {% if appointment.Instructor_lastname %}{{ appointment.Instructor_lastname|e }}, {% endif %}{{ appointment.Instructor_firstname|e }}
                                                                 {% if appointment.Instructor_specialties %}
@@ -1262,25 +1259,38 @@
     </script>
 
     <!-- CLOCK -->
-    <script type="text/javascript">
-        function startTime() {
-            var today=new Date(),
-                    curr_hour=today.getHours(),
-                    curr_min=today.getMinutes(),
-                    curr_sec=today.getSeconds();
-            curr_hour=checkTime(curr_hour);
-            curr_min=checkTime(curr_min);
-            curr_sec=checkTime(curr_sec);
-            document.getElementById('clock').innerHTML=curr_hour+":"+curr_min+":"+curr_sec;
-        }
-        function checkTime(i) {
-            if (i<10) {
-                i="0" + i;
-            }
-            return i;
-        }
-        setInterval(startTime, 500);
+    <script type="text/javascript">	
+window.onload = function() {
+  clock();  
+    function clock() {
+    var now = new Date();
+    var TwentyFourHour = now.getHours();
+    var hour = now.getHours();
+    var min = now.getMinutes();
+    var sec = now.getSeconds();
+    var mid = 'pm';
+    if (min < 10) {
+      min = "0" + min;
+    }
+    if (hour > 12) {
+      hour = hour - 12;
+    }    
+    if(hour==0){ 
+      hour=12;
+    }
+    if(TwentyFourHour < 12) {
+       mid = 'am';
+    }     
+  document.getElementById('clock').innerHTML =     hour+':'+min+':'+sec +' '+mid ;
+    setTimeout(clock, 1000);
+    }
+}
+
+		
+		
+		
     </script>
+	
     <!-- END CLOCK -->
 
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>

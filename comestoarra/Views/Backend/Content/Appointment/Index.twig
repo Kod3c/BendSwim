@@ -32,7 +32,7 @@
                             <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
                         </li>
                         <li class="active">
-                            <i class="fa fa-calendar"></i> Appointment Manager
+                            <i class="fa fa-calendar"></i> Lesson Manager
                         </li>
                     </ol>
                 </div>
@@ -49,7 +49,7 @@
                         <div class="panel panel-default">
                             {% if ( user.user_id != ID and ROLE == 7 ) %}
                                 <div class="panel-heading">
-                                    <a href="#" role="button" class="btn btn-default" data-toggle="modal" data-target="#addAppointment" rel="tooltip" data-placement="bottom" title="Insert New Appointment Data to Database !"><i class="fa fa-plus"></i> Add New Appointment</a>
+                                    <a href="#" role="button" class="btn btn-default" data-toggle="modal" data-target="#addAppointment" rel="tooltip" data-placement="bottom" title="Insert New Appointment Data to Database !"><i class="fa fa-plus"></i> Add New Lesson</a>
                                 </div>
                                 <!-- /.panel-heading -->
                             {% endif %}
@@ -280,7 +280,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                                        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-calendar"></i> Add New Swimmer Appointment</h4>
+                                        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-calendar"></i> Add New Swimmer Lesson</h4>
                                     </div>
 
                                     <form action="{{ urlFor( 'addSwimmerInstructorAppointmentAction' ) }}" method="post" role="form">
