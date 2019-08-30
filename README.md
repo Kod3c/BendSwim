@@ -11,7 +11,7 @@
 
 2. Repaired Email bug by removing emails entirely. Admin now creates/manages accounts.
 
-3. Cleaned up code reguarding Users and account creation.
+3. Cleaned up code regarding Users and account creation.
 
 
 ## CHANGELOG v.2.1
