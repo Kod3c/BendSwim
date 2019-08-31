@@ -291,7 +291,7 @@
                                                             {% endif %}
                                                         {% endif %}
                                                         <hr>
-                                                        {{ appointment.Instructor_firstname }} {{ appointment.Instructor_lastname }} {% if appointment.Instructor_specialties %}<br><a class="label label-info">{{ appointment.Instructor_specialties|e }}</a>{% endif %}
+                                                        {{ appointment.Instructor_firstname }} {{ appointment.Instructor_lastname }} {% if appointment.Instructor_specialties %}<br><a class="label label-info">Specialty: {{ appointment.Instructor_specialties|e }}</a>{% endif %}
                                                     </td>
                                                     <td class="cbn-table-center">
                                                         {% if appointment.Swimmer_avatar %}

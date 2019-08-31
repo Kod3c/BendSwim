@@ -1,268 +1,47 @@
+{% extends 'Backend/Master/Base.twig' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+{% block title %}{{ NAME }} - {{ TITLE }}{% endblock %}
 
-	<!-- Global stylesheets -->
-	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
-	<link href="../../comestoarra/Views/Backend/assets/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
-	<link href="../../comestoarra/Views/Backend/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-	<link href="../../comestoarra/Views/Backend/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
-	<link href="../../comestoarra/Views/Backend/assets/css/layout.min.css" rel="stylesheet" type="text/css">
-	<link href="../../comestoarra/Views/Backend/assets/css/components.min.css" rel="stylesheet" type="text/css">
-	<link href="../../comestoarra/Views/Backend/assets/css/colors.min.css" rel="stylesheet" type="text/css">
-	<!-- /global stylesheets -->
+{% block head %}
 
-	<!-- Core JS files -->
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/main/jquery.min.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/main/bootstrap.bundle.min.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/loaders/blockui.min.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/ui/slinky.min.js"></script>
-	<!-- /core JS files -->
+    {{ parent() }}
 
-	<!-- Theme JS files -->
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/visualization/d3/d3.min.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/visualization/d3/d3_tooltip.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/forms/styling/switchery.min.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/ui/moment/moment.min.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/plugins/pickers/daterangepicker.js"></script>
+    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}datatables/media/css/dataTables.bootstrap.min.css" type="text/css" />
 
-	<script src="../../comestoarra/Views/Backend/assets/js/app.js"></script>
-	<script src="../../comestoarra/Views/Backend/assets/global_assets/js/demo_pages/dashboard.js"></script>
-	<!-- /theme JS files -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
-<style>
+    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.css" type="text/css" />
 
-.btn-old {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-.btn-danger-old {
-    color: #fff;
-    background-color: #da2a2a;
-    border-color: #eea236;
-}
-.btn-success-old {
-    color: #fff;
-    background-color: #19ca91;
-    border-color: #eea236;
-}
-.btn-warning-old {
-    color: #fff;
-    background-color: #f0ad4e;
-    border-color: #eea236;
-}
-.btn-defaule-old {
-    position: relative;
-}
+    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}fancybox/source/jquery.fancybox.css" type="text/css" />
 
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
-    color: #555;
-    cursor: default;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-bottom-color: transparent;
-}
+{% endblock %}
 
-.nav-tabs>li>a {
-    margin-right: 2px;
-    line-height: 1.42857143;
-    border: 1px solid transparent;
-    border-radius: 4px 4px 0 0;
-}
+{% block content %}
 
-.nav>li>a {
-    position: relative;
-    display: block;
-    padding: 10px 15px;
-}
+    {% if error %}
 
-.tab-content>.active {
-    display: block;
-}
-</style>
+        {{ error }}
 
+    {% endif %}
 
-</head>
-
-<body>
-
-
-	<!-- Main navbar -->
-	<div class="navbar navbar-expand-md navbar-dark">
-		<div class="navbar-brand wmin-0 mr-5">
-			<a href="index.html" class="d-inline-block">
-				<img src="../comestoarra/Views/Backend/assets/global_assets/images/logo_light.png" alt="">
-			</a>
-		</div>
-
-		<div class="d-md-none">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
-				<i class="icon-tree5"></i>
-			</button>
-		</div>
-
-		<div class="collapse navbar-collapse" id="navbar-mobile">
-
-			<span class="badge bg-success-400 badge-pill ml-md-3 mr-md-auto">Status: Online</span>
-
-			<ul class="navbar-nav">
-
-				<li class="nav-item dropdown dropdown-user">
-					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                            {% if PROVIDER == 'DEFAULT' %}
-						<img src="{{ AVATAR }}" class="rounded-circle mr-2" height="34" alt="">
-                            {% endif %}
-                            {% if PROVIDER == 'BSS Instructor Registration' %}
-                                {% if AVATAR_Instructor %}
-                                    <img src="{{ PUBLIC_DIR }}avatars/Instructors/{{ AVATAR_Instructor }}" class="rounded-circle mr-2" height="34" alt="">
-                                {% else %}
-                                    <img src="{{ PUBLIC_DIR }}avatars/default.jpg" class="rounded-circle mr-2" height="34" alt="">
-                                {% endif %}
-                            {% endif %}
-                            {% if PROVIDER == 'BSS Swimmer Registration' %}
-                                {% if AVATAR_Swimmer %}
-                                    <img src="{{ PUBLIC_DIR }}avatars/Swimmers/{{ AVATAR_Swimmer }}" class="rounded-circle mr-2" height="34" alt="">
-                                {% else %}
-                                    <img src="{{ PUBLIC_DIR }}avatars/default.jpg" class="rounded-circle mr-2" height="34" alt="">
-                                {% endif %}
-                            {% endif %}
-						<span>{{ USERNAME }}</span>
-					</a>
-
-					<div class="dropdown-menu dropdown-menu-right">
-						<a href="{{ urlFor( 'myProfile' ) }}" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-						<a href="{{ urlFor( 'mailbox' ) }}" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages </a>
-						<div class="dropdown-divider"></div>
-						<a href="{{ LOGOUT }}" onclick="return comestoarraAlert('', 'warning', '{{ LOGOUT }}');" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<!-- /main navbar -->
-
-
-	<!-- Secondary navbar -->
-	<div class="navbar navbar-expand-md navbar-light">
-		<div class="text-center d-md-none w-100">
-			<button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-navigation">
-				<i class="icon-unfold mr-2"></i>
-				Navigation
-			</button>
-		</div>
-
-		<div class="navbar-collapse collapse" id="navbar-navigation">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a href="{{ urlFor( 'dashboard' ) }}" class="navbar-nav-link ">
-						<i class="icon-home4 mr-2"></i>
-						Dashboard
-					</a>
-				</li>
-
-				<li class="nav-item dropdown">
-					<a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-strategy mr-2"></i>
-						Back Office
-					</a>
-
-					<div class="dropdown-menu">
-						<div class="dropdown-header">User Managment</div>
-						<div class="dropdown-submenu">
-							<a href="#" class="dropdown-item dropdown-toggle"><i class="icon-grid2"></i> Accounts</a>
-							<div class="dropdown-menu">
-								<a href="{{ urlFor( 'Swimmers' ) }}" class="dropdown-item"><i class="icon-people"></i> Swimmers</a>
-								<a href="{{ urlFor( 'Instructors' ) }}" class="dropdown-item"><i class="icon-people"></i> Instructors</a>
-							</div>
-						</div>
-						<div class="dropdown-header">Lessons</div>
-						<a href="{{ urlFor( 'appointments' ) }}" class="dropdown-item" ><i class="icon-calendar3"></i> Lesson Managment</a>
-					</div>
-				</li>
-				
-				<li class="nav-item">
-					<a href="{{ urlFor( 'calendar' ) }}" class="navbar-nav-link ">
-						<i class="icon-calendar2 mr-2"></i>
-						Lesson Calendar
-					</a>
-				</li>
-			</ul>
-
-			<ul class="navbar-nav ml-md-auto">
-
-				<li class="nav-item dropdown">
-					<a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-cog3"></i>
-						<span class="d-md-none ml-2">Settings</span>
-					</a>
-
-					<div class="dropdown-menu dropdown-menu-right">
-						<a href="{{ urlFor( 'users' ) }}" class="dropdown-item"><i class="icon-user-lock"></i> Root User Roles</a>
-						<a href="{{ urlFor( 'allAuditTrails' ) }}" class="dropdown-item"><i class="icon-list-unordered"></i> Audit Trail</a>
-						<div class="dropdown-divider"></div>
-						<a href="{{ urlFor( 'globalSetting' ) }}" class="dropdown-item"><i class="icon-gear"></i> Global Settings</a>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-	<!-- /secondary navbar -->
-
-
-	<!-- Page header -->
-	<div class="page-header">
-		<div class="page-header-content header-elements-md-inline">
-			<div class="page-title d-flex">
-				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Home</span> - Lesson Manager</h4>
-				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-			</div>
-
-			<div class="header-elements d-none py-0 mb-3 mb-md-0">
-				<div class="breadcrumb">
-					<a href="index.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-					<span class="breadcrumb-item active">Lesson Manager</span>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- /page header -->
-		
-
-	<!-- Page content -->
-	<div class="page-content pt-0">
-
-		<!-- Main content -->
-		<div class="content-wrapper">
-
-			<!-- Content area -->
-			<div class="content">
-
-
-				<!-- Dashboard content -->
-
+    <div class="container{% if CONTENT_FLUID %}-fluid{% endif %}">
+        <!-- Page Heading -->
+        <div class="row page-header">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-users"></i>  <a href="{{ urlFor( 'Instructors' ) }}">Instructor Manager</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-user"></i> Instructor Profile
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
 
         {% if PERMISSION %}
 
@@ -330,7 +109,7 @@
                         <div class="panel-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
-                                <li class=""><a href="#profile" data-toggle="tab">Instructor Profile</a></li>
+                                <li class="active"><a href="#profile" data-toggle="tab">Instructor Profile</a></li>
                                 {% if Instructor_PROFILE['can_login'] %}
                                     <li><a href="#auth" data-toggle="tab">Login Information</a></li>
                                 {% endif %}
@@ -342,7 +121,7 @@
                             </ul>
 
                             <!-- Tab panes -->
-                            <div class="tab-content active">
+                            <div class="tab-content">
 
                                 <div class="tab-pane fade in active" id="profile">
                                     <br />
@@ -1093,22 +872,11 @@
 
             {% endif %}
 
-				<!-- /dashboard content -->
+    </div><!-- /.container-fluid -->
+{% endblock %}
 
-			</div>
-			<!-- /content area -->
-
-		</div>
-		<!-- /main content -->
-
-	</div>
-	<!-- /page content -->
-
-
-		
-</body>
-
-
+{% block footer %}
+    {{ parent() }}
 
     {{  SCRIPT|raw }}
 
@@ -1330,4 +1098,4 @@
 
     {% endif %}
 
-</html>
+{% endblock %}
