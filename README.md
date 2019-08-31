@@ -4,6 +4,8 @@
 
 
 # Swim Lesson Appointment System v.2.2
+![Image](https://i.imgur.com/wuBuZLV.png)
+
 A system to help instructors and pool managers regulate and delegate swim lessons and other tasks.
 
 ## CHANGELOG v.2.2
