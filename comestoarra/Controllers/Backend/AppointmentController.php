@@ -332,7 +332,7 @@ class AppointmentController extends GlobalController
 
                 if ( $timeAtThatDay == "Request Only" ) :
 
-                    echo " <p class='help-block'>Instructor time table on " . " <span class='label label-primary'>" . $this->app->request()->post( 'day_parse' ) . "</span>" . " was <span class='label label-danger'>" . $timeAtThatDay . "</span></p>";
+                    echo " <p class='help-block'>Times on" . " <span class='label label-primary'>" . $this->app->request()->post( 'day_parse' ) . "</span>" . " instructor is availible: <span class='label label-danger'>" . $timeAtThatDay . "</span></p>";
 
                     if ( ! empty ( $timeAtThatDayStartTime ) && ! empty ( $timeAtThatDayEndTime ) ) :
 
@@ -371,7 +371,7 @@ class AppointmentController extends GlobalController
 
                         endforeach;
 
-                        echo "<div class='form-group'><label for='appointment_time_pick'>Lesson Time Available</label><hr>";
+                        echo "<div class='form-group'><label for='appointment_time_pick'>Time's Available</label><hr>";
 
                         if ( ! empty ( $tempTimeSlotAll ) ) :
 
@@ -405,7 +405,7 @@ class AppointmentController extends GlobalController
                     
                 else :
 
-                    echo " <p class='help-block'>Instructor time table on " . " <span class='label label-primary'>" . $this->app->request()->post( 'day_parse' ) . "</span>" . " was at : <span class='label label-primary'>" . $timeAtThatDay . "</span></p>";
+                    echo " <p class='help-block'>Times on" . " <span class='label label-primary'>" . $this->app->request()->post( 'day_parse' ) . "</span>" . " instructor is availible: <span class='label label-primary'>" . $timeAtThatDay . "</span></p>";
 
                     if ( ! empty ( $timeAtThatDayStartTime ) && ! empty ( $timeAtThatDayEndTime ) ) :
 
@@ -444,7 +444,7 @@ class AppointmentController extends GlobalController
 
                         endforeach;
 
-                        echo "<div class='form-group'><label for='appointment_time_pick'>Lesson Time Available</label><hr>";
+                        echo "<div class='form-group'><label for='appointment_time_pick'>Time's Available:</label><br>";
 
                         if ( ! empty ( $tempTimeSlotAll ) ) :
 
