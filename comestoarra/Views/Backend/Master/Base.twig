@@ -2,31 +2,38 @@
 <html lang="en" class="no-js">
 <HEAD>
     {% block head %}
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="robots" content="noindex, nofollow">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="author" content="">
-        <title>Bend Swim School - {% block title %}{% endblock %}</title>
-        <link rel="stylesheet" href="{{ BOOTSTRAP_COMPONENT_CSS }}" type="text/css" />
-        <link rel="stylesheet" href="{{ BACKEND_ASSETS_CSS }}style.css" type="text/css" />
-        <link rel="stylesheet" href="{{ BACKEND_ASSETS_CSS }}plugins/morris.css" type="text/css" />
-        <link rel="stylesheet" href="{{ PUBLIC_ASSETS }}font-awesome/css/font-awesome.min.css" type="text/css" />
-        <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" type="text/css" />
-        <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}gritter/css/jquery.gritter.css" type="text/css" />
-        <link rel="stylesheet" href="{{ FULLCALENDAR_CSS }}" type="text/css" />
-        <link rel="stylesheet" href="{{ FULLCALENDAR_PRINT_CSS }}" type="text/css" media='print' />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
 
-        <link rel="shortcut icon" href="{% if APP_FAVICON != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_FAVICON }} {% else %} {{ DEFAULT_FAVICON }} {% endif %}">
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-        <script src="{{ JQUERY_COMPONENT }}" type="text/javascript"></script>
-        <script src="{{ GLOBAL_COMPONENTS }}sweetalert/dist/sweetalert.min.js"></script>
-        <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}sweetalert/dist/sweetalert.css" type="text/css" />
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="assets/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/layout.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="assets/css/colors.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script src="assets/global_assets/js/main/jquery.min.js"></script>
+	<script src="assets/global_assets/js/main/bootstrap.bundle.min.js"></script>
+	<script src="assets/global_assets/js/plugins/loaders/blockui.min.js"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script src="assets/global_assets/js/plugins/visualization/d3/d3.min.js"></script>
+	<script src="assets/global_assets/js/plugins/visualization/d3/d3_tooltip.js"></script>
+	<script src="assets/global_assets/js/plugins/forms/styling/switchery.min.js"></script>
+	<script src="assets/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js"></script>
+	<script src="assets/global_assets/js/plugins/ui/moment/moment.min.js"></script>
+	<script src="assets/global_assets/js/plugins/pickers/daterangepicker.js"></script>
+
+	<script src="assets/js/app.js"></script>
+	<script src="assets/global_assets/js/demo_pages/dashboard.js"></script>
+	<!-- /theme JS files -->
     {% endblock %}
 </HEAD>
 <BODY>
