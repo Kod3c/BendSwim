@@ -1,0 +1,35 @@
+
+## CHANGELOG v.2.3.0
+
+Just some simple bug fixes.
+
+Including:
+
+	1. Updating Lesson Lengths
+          Removed 45 minute lessons until Structure can be put in place.
+	2. Updated Default Avatar Handling
+	3. Updated Base.twig Formatting.
+	4. Repaired Htaccess For Test Env
+	5. Made Cosmetic README Updates
+	6. Included Code of Conduct
+
+## CHANGELOG v.2.2
+
+1. Got rid of mentions of "Appointments"
+     - Replaced with "Lessons"
+
+2. Repaired Email bug by removing emails entirely. Admin now creates/manages accounts.
+
+3. Cleaned up code regarding Users and account creation.
+
+
+## CHANGELOG v.2.1
+
+- [FIXED] user last_failed_login count and set last_failed_login date
+- [FIXED] appointment date cannot be blank - Appointment Form @ Dashboard
+- [UPDATED] language array twig parser
+- [FIXED] check existence for translation lang file, from session or DEFAULT_LANGUAGE constant value
+- [UPDATED] added Base Twig Layout for Auth modules (login, signup, register, forgot, reset)
+- [FIXED] MySQL 5.7.5+ changed the way GROUP BY behaved in order to be SQL99 compliant (where in previous versions it was not). [SettingModel : getBrowserStatistics]
+- [FIXED] Trying to get property of non-object
+- [IMPROVED] Auth security
