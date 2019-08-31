@@ -1,12 +1,26 @@
-<a href='https://github.com/Kod3c/BendSwim/releases'><img src='https://img.shields.io/badge/Build-Passing-brightgreen'></a> <a href='https://github.com/Kod3c/BendSwim/releases'><img src='https://img.shields.io/badge/Release-v2.2-blue'></a> <img src='https://img.shields.io/github/license/Kod3c/BendSwim?color=brightgreen'> <a href='https://github.com/Kod3c/BendSwim/issues'><img src='https://img.shields.io/github/issues/Kod3c/BendSwim'></a> <img src='https://img.shields.io/github/forks/Kod3c/BendSwim'> <img src='https://img.shields.io/badge/Code%20Size-51.85%20MB-blue'> <a href='https://github.com/Kod3c/BendSwim/blob/master/CODE_OF_CONDUCT.md'><img  src='https://camo.githubusercontent.com/ee50e87026b615a0348ce5f77bd088e3ea160b3d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2545322539442541342d636f64652532306f66253230636f6e647563742d626c75652e7376673f7374796c653d666c6174'></a><br>
+<a href='https://github.com/Kod3c/BendSwim/releases'><img src='https://img.shields.io/badge/Build-Passing-brightgreen'></a> <a href='https://github.com/Kod3c/BendSwim/releases'><img src='https://img.shields.io/badge/Release-v2.3.0-blue'></a> <img src='https://img.shields.io/github/license/Kod3c/BendSwim?color=brightgreen'> <a href='https://github.com/Kod3c/BendSwim/issues'><img src='https://img.shields.io/github/issues/Kod3c/BendSwim'></a> <img src='https://img.shields.io/github/forks/Kod3c/BendSwim'> <img src='https://img.shields.io/badge/Code%20Size-51.85%20MB-blue'> <a href='https://github.com/Kod3c/BendSwim/blob/master/CODE_OF_CONDUCT.md'><img  src='https://camo.githubusercontent.com/ee50e87026b615a0348ce5f77bd088e3ea160b3d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f2545322539442541342d636f64652532306f66253230636f6e647563742d626c75652e7376673f7374796c653d666c6174'></a><br>
 <img src='https://forthebadge.com/images/badges/does-not-contain-msg.svg'> <img src='https://forthebadge.com/images/badges/powered-by-netflix.svg'>
 
 
 
-# Swim Lesson Appointment System v.2.2
+# Swim Lesson Appointment System v.2.3.0
 ![Image](https://i.imgur.com/wuBuZLV.png)
 
 A system to help instructors and pool managers regulate and delegate swim lessons and other tasks.
+
+## CHANGELOG v.2.3.0
+
+Just some simple bug fixes.
+
+Including:
+
+	1. Updating Lesson Lengths
+          Removed 45 minute lessons until Structure can be put in place.
+	2. Updated Default Avatar Handling
+	3. Updated Base.twig Formatting.
+	4. Repaired Htaccess For Test Env
+	5. Made Cosmetic README Updates
+	6. Included Code of Conduct
 
 ## CHANGELOG v.2.2
 
