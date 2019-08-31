@@ -7,7 +7,7 @@
         <meta name="robots" content="noindex, nofollow">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="author" content="">
-        <title>Bend Swim School - {% block title %}{% endblock %}</title>
+        <title>{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="{{ BOOTSTRAP_COMPONENT_CSS }}" type="text/css" />
         <link rel="stylesheet" href="{{ BACKEND_ASSETS_CSS }}style.css" type="text/css" />
         <link rel="stylesheet" href="{{ BACKEND_ASSETS_CSS }}plugins/morris.css" type="text/css" />
@@ -107,10 +107,10 @@
                                 <a href="{{ urlFor( 'globalSetting' ) }}"><i class="fa fa-wrench"></i> Global Settings</a>
                             </li>
                             <li class="{{ USER_ACTIVE }}">
-                                <a href="{{ urlFor( 'users' ) }}"><i class="fa fa-group"></i> User Auth &amp; Role Manager</a>
+                                <a href="{{ urlFor( 'users' ) }}"><i class="fa fa-group"></i> User Accounts</a>
                             </li>
                             <li class="{{ AUDIT_ACTIVE }}">
-                                <a href="{{ urlFor( 'allAuditTrails' ) }}"><i class="fa fa-list"></i> Simple Audit Trails</a>
+                                <a href="{{ urlFor( 'allAuditTrails' ) }}"><i class="fa fa-list"></i> System Audit Trails</a>
                             </li>
 
                          </ul>

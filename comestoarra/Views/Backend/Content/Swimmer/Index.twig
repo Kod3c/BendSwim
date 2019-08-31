@@ -75,7 +75,7 @@
                                                         {% endif %}
                                                         <strong>{{ Swimmer.last_name|e }}, {{ Swimmer.first_name|e }}</strong>
 														<br>
-														<a class="label label-warning">{{ Swimmer.birthdate|e }}</a>
+														<a class="label label-warning">Age: {{ "now"|date("Y-m-d") - Swimmer.birthdate|e }}</a>
                                                     </td>
                                                     <td class="cbn-table-center">
                                                         Email: {{ Swimmer.user_email|e }}

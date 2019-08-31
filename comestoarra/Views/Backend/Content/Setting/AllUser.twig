@@ -19,7 +19,7 @@
             <nav>
                 <ul>
                     <li class=""><a href="{{ urlFor( 'globalSetting' ) }}" class="fa fa-wrench"> <span>Global Settings</span></a></li>
-                    <li class="active"><a href="{{ urlFor( 'users' ) }}" class="fa fa-group"> <span>User Auth &amp; Role Manager</span></a></li>
+                    <li class="active"><a href="{{ urlFor( 'users' ) }}" class="fa fa-group"> <span>User Accounts</span></a></li>
                     {% if ROLE == 7 %}
                         <li class=""><a href="{{ urlFor( 'allAuditTrails' ) }}" class="fa fa-list"> <span>Simple Audit Trails</span></a></li>
                     {% endif %}
@@ -38,7 +38,7 @@
                         <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-group"></i> User Auth &amp; Role Manager
+                        <i class="fa fa-group"></i> User Accounts
                     </li>
                 </ol>
             </div>
@@ -56,9 +56,9 @@
                         <div class="panel-body">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
-                                <li class="active"><a href="#users" data-toggle="tab">User Auth Managers</a></li>
+                                <li class="active"><a href="#users" data-toggle="tab">User Accounts</a></li>
                                 {% if ROLE == 7 %}
-                                    <li><a href="#roles" data-toggle="tab">Role Managers</a></li>
+                                    <li><a href="#roles" data-toggle="tab">Role Permissions</a></li>
                                 {% endif %}
                             </ul>
 

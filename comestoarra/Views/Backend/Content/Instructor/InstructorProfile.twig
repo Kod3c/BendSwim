@@ -54,7 +54,7 @@
                             {% if Instructor_PROFILE['avatar'] %}
                                 <p align="center"> <img src="{{ PUBLIC_DIR }}avatars/Instructors/{{ Instructor_PROFILE['avatar'] }}" alt="" width="250px"></p>
                             {% else %}
-                                <p align="center"><img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="200px"></p>
+                                <p align="center"><img src="{% if Swimmer_PROFILE['gender'] == '1' %}http://www.businesssouthwest.com.au/wp-content/uploads/2017/11/Female-Avatar-500x500.jpg{% endif %}{% if Swimmer_PROFILE['gender'] == '2' %}http://www.businesssouthwest.com.au/wp-content/uploads/2017/11/Male-Avatar-500x500.jpg{% endif %}" alt="" width="200px"></p>
                             {% endif %}
                             <hr>
                             <p align="center">
