@@ -5,7 +5,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+	<title>Swim School of Bend Appointment Manager</title>
+    <link rel="shortcut icon" href="{% if APP_FAVICON != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_FAVICON }} {% else %} {{ DEFAULT_FAVICON }} {% endif %}">
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -86,21 +87,23 @@
     border-bottom-color: transparent;
 }
 
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
 .nav-tabs>li>a {
     margin-right: 2px;
     line-height: 1.42857143;
     border: 1px solid transparent;
     border-radius: 4px 4px 0 0;
 }
-
 .nav>li>a {
     position: relative;
     display: block;
     padding: 10px 15px;
-}
-
-.tab-content>.active {
-    display: block;
 }
 </style>
 
@@ -113,8 +116,8 @@
 	<!-- Main navbar -->
 	<div class="navbar navbar-expand-md navbar-dark">
 		<div class="navbar-brand wmin-0 mr-5">
-			<a href="index.html" class="d-inline-block">
-				<img src="../comestoarra/Views/Backend/assets/global_assets/images/logo_light.png" alt="">
+			<a href="{{ urlFor( 'dashboard' ) }}" class="d-inline-block">
+				<img src="../../comestoarra/Views/Backend/assets/global_assets/images/logo_light.png" alt="">
 			</a>
 		</div>
 
@@ -236,14 +239,14 @@
 	<div class="page-header">
 		<div class="page-header-content header-elements-md-inline">
 			<div class="page-title d-flex">
-				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Home</span> - Lesson Manager</h4>
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Home</span> - Profile</h4>
 				<a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
 			</div>
 
 			<div class="header-elements d-none py-0 mb-3 mb-md-0">
 				<div class="breadcrumb">
 					<a href="index.html" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-					<span class="breadcrumb-item active">Lesson Manager</span>
+					<span class="breadcrumb-item active">Profile</span>
 				</div>
 			</div>
 		</div>
@@ -258,584 +261,344 @@
 		<div class="content-wrapper">
 
 			<!-- Content area -->
-			<div class="content">
+<div class="content">
 
+				<!-- Inner container -->
+				<div class="d-flex align-items-start flex-column flex-md-row">
 
-				<!-- Dashboard content -->
+					<!-- Left content -->
+					<div class="tab-content w-100 overflow-auto order-2 order-md-1">
 
+					    <div class="tab-pane fade active show" id="settings">
 
-        {% if PERMISSION %}
+							<!-- Profile info -->
+							<div class="card">
+								<div class="card-header header-elements-inline">
+									<h5 class="card-title">Profile information</h5>
+									<div class="header-elements">
+										<div class="list-icons">
+					                		<a class="list-icons-item" data-action="collapse"></a>
+					                		<a class="list-icons-item" data-action="reload"></a>
+					                		<a class="list-icons-item" data-action="remove"></a>
+					                	</div>
+				                	</div>
+								</div>
 
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-3">
+								<div class="card-body">
+									<form id="updateProfileAction" role="form" method="post" action="{{ urlFor( 'updateInstructorProfileAction' ) }}">
+										<div class="form-group">
+											<div class="row">
+												<div class="col-md-6">
+													<label>First Name</label>
+													<input id="first_name" name="first_name" class="form-control" value="{{ Instructor_PROFILE['first_name'] }}">
+												</div>
+												<div class="col-md-6">
+													<label>Last Name</label>
+													<input id="first_name" name="last_name" class="form-control" value="{{ Instructor_PROFILE['last_name'] }}">
+												</div>
+											</div>
+										</div>
 
-                    <div class="panel panel-default">
-                        <div class="modal-body">
-                            {% if Instructor_PROFILE['avatar'] %}
-                                <p align="center"> <img src="{{ PUBLIC_DIR }}avatars/Instructors/{{ Instructor_PROFILE['avatar'] }}" alt="" width="250px"></p>
-                            {% else %}
-                                <p align="center"><img src="{% if Swimmer_PROFILE['gender'] == '1' %}http://www.businesssouthwest.com.au/wp-content/uploads/2017/11/Female-Avatar-500x500.jpg{% endif %}{% if Swimmer_PROFILE['gender'] == '2' %}http://www.businesssouthwest.com.au/wp-content/uploads/2017/11/Male-Avatar-500x500.jpg{% endif %}" alt="" width="200px"></p>
-                            {% endif %}
-                            <hr>
-                            <p align="center">
-                            <strong>#{{ NAME }} - {{ Instructor_PROFILE['birthdate']|replace({'-': ''}) }} - DDS{{ Instructor_PROFILE['Instructor_id']|e }}</strong>
-                            </p>
-                            <hr>
-                            <p align="center">
-                            <strong>
-                                {% if Instructor_PROFILE['last_name'] %}{{ Instructor_PROFILE['last_name']|e }}, {% endif %}{{ Instructor_PROFILE['first_name']|e }}
-                                {% if Instructor_PROFILE['specialties'] %}
-                                    <br>
-                                    <a class="label label-info">{{ Instructor_PROFILE['specialties']|e }}</a>
-                                {% endif %}
-                            </strong>
-                            </p>
-                        </div>
+										<div class="form-group">
+											<div class="row">
+												<div class="col-md-6">
+													<label>Birthdate</label>
+                                                    <input id="birthdate" name="birthdate" class="form-control" value="{{ Instructor_PROFILE['birthdate'] }}">
+												</div>
+												<div class="col-md-6">
+													<label>Phone</label>
+													<input id="first_name" name="cellphone" class="form-control" value="{{ Instructor_PROFILE['cellphone'] }}">
+												</div>
+											</div>
+										</div>
 
-                        <div class="modal-footer">
+										<div class="form-group">
+											<div class="row">
+												<div class="col-md-6">
+													<label>Email</label>
+													<input id="user_email" class="form-control" value="{{ Instructor_PROFILE['user_email'] }}" disabled>
+												</div>
+												<div class="col-md-6">
+                                                    <label for="specialties">Specialties</label>
+                                                            <select name="specialties" id="specialties" class="form-control">
+                                                            <option value="Infants" {% if Instructor_PROFILE['specialties'] == 'Infants' %}selected{% endif %}>Infants</option>
+                                                            <option value="Toddlers" {% if Instructor_PROFILE['specialties'] == 'Toddlers' %}selected{% endif %}>Toddlers</option>
+                                                            <option value="Preschoolers" {% if Instructor_PROFILE['specialties'] == 'Preschoolers' %}selected{% endif %}>Preschoolers</option>
+                                                            <option value="Elementry" {% if Instructor_PROFILE['specialties'] == 'Elementry' %}selected{% endif %}>Elementry</option>
+                                                            <option value="Preteen" {% if Instructor_PROFILE['specialties'] == 'Preteen' %}selected{% endif %}>Preteen</option>
+                                                            <option value="Adult" {% if Instructor_PROFILE['specialties'] == 'Adult' %}selected{% endif %}>Adult</option>
+						                                </select>
+												</div>
+											</div>
+										</div>
 
-                            <div class="col-md-12">
-
-                                <form id="uploadAvatarAction" action="{{ urlFor( 'uploadInstructorAvatarAction' ) }}" method="post" enctype="multipart/form-data">
-                                    <span id="avatar_button" class="btn btn-block btn-default btn-file" rel="tooltip"  data-placement="bottom" title="Select an avatar image from your hard-disk, only .jpg">
-                                        UPLOAD NEW AVATAR <input type="file" id="avatar_file" name="avatar_file" accept="image/*" required >
-                                    </span>
-                                    <input type="hidden" name="MAX_FILE_SIZE" value="{{ HUGE_AVATAR_MAX_SIZE }}" />
-                                    <input type="hidden" id="Instructor_id" name="Instructor_id" value="{{ Instructor_PROFILE['Instructor_id'] }}">
-                                    <input type="hidden" id="first_name" name="first_name" value="{{ Instructor_PROFILE['first_name'] }}">
-                                    <input type="hidden" id="last_name" name="last_name" value="{{ Instructor_PROFILE['last_name'] }}">
-                                    <input type="hidden" id="user_name" name="user_name" value="{{ Instructor_PROFILE['user_name'] }}">
-                                    <input type="hidden" id="user_email" name="user_email" value="{{ Instructor_PROFILE['user_email'] }}">
-                                    <output id="cbn_avatar_list"></output>
-                                    <input type="submit" id="avatar_upload" onclick="return comestoarraAlert( '#uploadAvatarAction', 'warning', '' );" class='btn btn-block btn-success' value="UPLOAD NEW AVATAR">
-                                    <a id="avatar_upload_cancel" onclick="reload()" class='btn btn-block btn-danger'>CANCEL</a>
-                                    <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-                <div class="col-lg-9">
-
-                    <div class="panel panel-default">
-
-                        <div class="panel-body">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
-                                <li class=""><a href="#profile" data-toggle="tab">Instructor Profile</a></li>
-                                {% if Instructor_PROFILE['can_login'] %}
-                                    <li><a href="#auth" data-toggle="tab">Login Information</a></li>
-                                {% endif %}
-                                {% if ( user.user_id != ID and ROLE == 7 ) %}
-                                    <li><a href="#timetable" data-toggle="tab">Time Table</a></li>
-                                {% endif %}
-                                <li><a href="#appointment" data-toggle="tab">Swimmers / Lessons</a></li>
-                                <li><a href="#Instructor-calendar" data-toggle="tab">Lesson Calendar</a></li>
-                            </ul>
-
-                            <!-- Tab panes -->
-                            <div class="tab-content active">
-
-                                <div class="tab-pane fade in active" id="profile">
-                                    <br />
-
-                                    <form id="updateProfileAction" role="form" method="post" action="{{ urlFor( 'updateInstructorProfileAction' ) }}">
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="first_name">First Name</label>
-                                                <input id="first_name" name="first_name" class="form-control" value="{{ Instructor_PROFILE['first_name'] }}">
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="last_name">Last Name</label>
-                                                <input id="last_name" name="last_name" class="form-control" value="{{ Instructor_PROFILE['last_name'] }}">
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="birthdate">Birthday</label>
-                                                <input id="birthdate" name="birthdate" class="form-control" value="{{ Instructor_PROFILE['birthdate'] }}">
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="phone">Phone</label>
-                                                <input id="phone" name="phone" class="form-control" value="{{ Instructor_PROFILE['phone'] }}">
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="cellphone">Cell Phone</label>
-                                                <input id="cellphone" name="cellphone" class="form-control" value="{{ Instructor_PROFILE['cellphone'] }}">
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="specialties">Specialties</label>
-                                                <select name="specialties" id="specialties" class="form-control">
-                                                <option value="Infants" {% if Instructor_PROFILE['specialties'] == 'Infants' %}selected{% endif %}>Infants</option>
-                                                <option value="Toddlers" {% if Instructor_PROFILE['specialties'] == 'Toddlers' %}selected{% endif %}>Toddlers</option>
-                                                <option value="Preschoolers" {% if Instructor_PROFILE['specialties'] == 'Preschoolers' %}selected{% endif %}>Preschoolers</option>
-                                                <option value="Elementry" {% if Instructor_PROFILE['specialties'] == 'Elementry' %}selected{% endif %}>Elementry</option>
-                                                <option value="Preteen" {% if Instructor_PROFILE['specialties'] == 'Preteen' %}selected{% endif %}>Preteen</option>
-                                                <option value="Adult" {% if Instructor_PROFILE['specialties'] == 'Adult' %}selected{% endif %}>Adult</option>
-                                                </select>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="bio">Bio</label>
-                                                <textarea id="bio" name="bio" class="form-control" rows="3">{{ Instructor_PROFILE['bio'] }}</textarea>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6">
-
-                                            <div class="form-group">
-                                                <label for="address">Address</label>
-                                                <textarea id="address" name="address" class="form-control" rows="3">{{ Instructor_PROFILE['address'] }}</textarea>
-                                            </div>
-
-                                        </div>
-
+				                        <div class="form-group">
+				                        	<div class="row">
+				                        		<div class="col-md-8">
+													<label>Bio</label>
+													<textarea id="bio" name="bio" class="form-control" rows="3">{{ Instructor_PROFILE['bio'] }}</textarea>
+				                        		</div>
+				                        	</div>
+				                        </div>
+                                        
                                         <input type="hidden" id="Instructor_id" name="Instructor_id" value="{{ Instructor_PROFILE['Instructor_id'] }}">
 
-                                        <div class="col-md-6">
-
+				                        <div class="text-right">
                                             <button type="submit" class="btn btn-primary" onclick="return comestoarraAlert( '#updateProfileAction', 'warning', '' );">Update Profile</button>
-
-                                        </div>
+				                        </div>
 
                                         <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                    </form>
-
-                                </div>
-
-                                <div class="tab-pane fade in" id="auth">
-                                    <br />
-
-                                    <div class="col-md-6">
-
-                                        <div class="form-group">
-                                            <label for="user_email">Email Address </label>
-                                            <input id="user_email" class="form-control" value="{{ Instructor_PROFILE['user_email'] }}" disabled>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-6">
-
-                                        <label>Username {% if ( user.user_id != ID and ROLE == 7 ) %}<a class="cbn-modal-link" href="#" data-toggle="modal" data-target="#changeUsername">change your username ?</a>{% endif %}</label>
-                                        <div class="form-group input-group">
-                                            <span class="input-group-addon">@</span>
-                                            <input type="text" class="form-control" placeholder="Username" value="{{ Instructor_PROFILE['user_name'] }}" disabled>
-                                        </div>
-
-                                    </div>
-
-                                    {% if ( user.user_id != ID and ROLE == 7 ) %}
-                                        <form id="changePasswordAction" role="form" method="post" action="{{ urlFor( 'changeInstructorPasswordAction' ) }}">
-
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-                                                    <label for="reset_input_password_new">Password</label>
-                                                    <input id="reset_input_password_new" class="form-control" type="text"
-                                                           name="user_password_new" required autocomplete="off" />
-                                                </div>
-
-                                            </div>
-
-                                            <div class="col-md-6">
-
-                                                <div class="form-group">
-                                                    <label for="reset_input_password_repeat">Password (again)</label>
-                                                    <input id="reset_input_password_repeat" class="form-control" type="password"
-                                                           name="user_password_repeat" required autocomplete="off" />
-                                                </div>
-
-                                            </div>
-
-                                            <input type="hidden" id="Instructor_id" name="Instructor_id" value="{{ Instructor_PROFILE['Instructor_id'] }}">
-                                            <input type="hidden" id="user_name" name="user_name" value="{{ Instructor_PROFILE['user_name'] }}">
-
-                                            
-                                            <div class="col-md-6">
-
-                                                <button type="submit" class="btn btn-danger" onclick="return comestoarraAlert( '#changePasswordAction', 'warning', '' );">Change Password</button>
-
-                                            </div>
-
-                                            <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                        </form>
-                                    {% endif %}
-
-                                    {% if ( user.user_id != ID and ROLE == 7 ) %}
-
-                                        <!-- Change Email Modal -->
-                                        <div class="modal fade" id="changeEmail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                                                        <h4 class="modal-title" id="myModalLabel">Change Email Address : {{ Instructor_PROFILE['user_email'] }}</h4>
-                                                    </div>
-
-                                                    <form action="{{ urlFor( 'changeInstructorEmailAction' ) }}" method="post" role="form">
-                                                        <div class="modal-body">
-
-                                                            <div class="form-group">
-                                                                <label for="user_email">New Email Address</label>
-                                                                <input id="user_email" class="form-control" type="text" name="user_email" required>
-                                                                <p class="help-block">Please provide an valid Email Address !</p>
-                                                            </div>
-
-                                                        </div>
-                                                        <input type="hidden" id="Instructor_id" name="Instructor_id" value="{{ Instructor_PROFILE['Instructor_id'] }}">
-                                                        <input type="hidden" id="user_name" name="user_name" value="{{ Instructor_PROFILE['user_name'] }}">
-                                                        <div class="modal-footer">
-
-                                                            <a class="btn btn-danger" data-dismiss="modal">Close</a>
-                                                            <button type="submit" class="btn btn-success">Submit</button>
-
-                                                        </div>
-
-                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                                    </form>
-
-                                                </div>
-                                                <!-- /.modal-content -->
-                                            </div>
-                                            <!-- /.modal-dialog -->
-                                        </div>
-                                        <!-- /.modal -->
-
-                                        <!-- Change Username Modal -->
-                                        <div class="modal fade" id="changeUsername" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                                                        <h4 class="modal-title" id="myModalLabel">Change Username : @{{ Instructor_PROFILE['user_name'] }}</h4>
-                                                    </div>
-                                                    <form action="{{ urlFor( 'changeInstructorUsernameAction' ) }}" method="post" role="form">
-                                                        <div class="modal-body">
-
-                                                            <div class="form-group input-group">
-                                                                <span class="input-group-addon">@</span>
-                                                                <input type="text" class="form-control" placeholder="New Username" name="user_name" required>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <input type="hidden" id="Instructor_id" name="Instructor_id" value="{{ Instructor_PROFILE['Instructor_id'] }}">
-                                                        <input type="hidden" id="user_email" name="user_email" value="{{ Instructor_PROFILE['user_email'] }}">
-                                                        <div class="modal-footer">
-
-                                                            <a class="btn btn-danger" data-dismiss="modal">Close</a>
-                                                            <button type="submit" class="btn btn-success">Submit</button>
-
-                                                        </div>
-
-                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                                    </form>
-                                                </div>
-                                                <!-- /.modal-content -->
-                                            </div>
-                                            <!-- /.modal-dialog -->
-                                        </div>
-                                        <!-- /.modal -->
-
-                                    {% endif %}
-
-                                </div>
-
-                                {% if ( user.user_id != ID and ROLE == 7 ) %}
-
-                                <div class="tab-pane fade in" id="timetable">
-                                    <br />
-
-                                    <form id="updateTimetableAction" action="{{ urlFor( 'updateInstructorTimetableAction' ) }}" method="post" role="form">
-                                        <div class="modal-body">
-
-                                            <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <h3 style="color: #d20c0c;">SUN</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-lg-5">
-                                                                <label for="sunday_timepicker_start"></label>
-                                                                <input id="sunday_timepicker_start" class="form-control cbn-timepicker" type="text" name="sunday_timepicker_start" value="{% if Instructor_PROFILE['timetable_sunday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_sunday_start'] }}{% endif %}">
-                                                            </div>
-                                                            <div class="col-lg-2" align="center"><h3>-</h3></div>
-                                                            <div class="col-lg-5">
-                                                                <label for="sunday_timepicker_end"></label>
-                                                                <input id="sunday_timepicker_end" class="form-control cbn-timepicker" type="text" name="sunday_timepicker_end" value="{% if Instructor_PROFILE['timetable_sunday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_sunday_end'] }}{% endif %}">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <h3>MON</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-lg-5">
-                                                                <label for="monday_timepicker_start"></label>
-                                                                <input id="monday_timepicker_start" class="form-control cbn-timepicker" type="text" name="monday_timepicker_start" value="{% if Instructor_PROFILE['timetable_monday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_monday_start'] }}{% endif %}">
-                                                            </div>
-                                                            <div class="col-lg-2" align="center"><h3>-</h3></div>
-                                                            <div class="col-lg-5">
-                                                                <label for="monday_timepicker_end"></label>
-                                                                <input id="monday_timepicker_end" class="form-control cbn-timepicker" type="text" name="monday_timepicker_end" value="{% if Instructor_PROFILE['timetable_monday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_monday_end'] }}{% endif %}">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <h3>TUE</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-lg-5">
-                                                                <label for="tuesday_timepicker_start"></label>
-                                                                <input id="tuesday_timepicker_start" class="form-control cbn-timepicker" type="text" name="tuesday_timepicker_start" value="{% if Instructor_PROFILE['timetable_tuesday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_tuesday_start'] }}{% endif %}">
-                                                            </div>
-                                                            <div class="col-lg-2" align="center"><h3>-</h3></div>
-                                                            <div class="col-lg-5">
-                                                                <label for="tuesday_timepicker_end"></label>
-                                                                <input id="tuesday_timepicker_end" class="form-control cbn-timepicker" type="text" name="tuesday_timepicker_end" value="{% if Instructor_PROFILE['timetable_tuesday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_tuesday_end'] }}{% endif %}">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <h3>WED</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-lg-5">
-                                                                <label for="wednesday_timepicker_start"></label>
-                                                                <input id="wednesday_timepicker_start" class="form-control cbn-timepicker" type="text" name="wednesday_timepicker_start" value="{% if Instructor_PROFILE['timetable_wednesday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_wednesday_start'] }}{% endif %}">
-                                                            </div>
-                                                            <div class="col-lg-2" align="center"><h3>-</h3></div>
-                                                            <div class="col-lg-5">
-                                                                <label for="wednesday_timepicker_end"></label>
-                                                                <input id="wednesday_timepicker_end" class="form-control cbn-timepicker" type="text" name="wednesday_timepicker_end" value="{% if Instructor_PROFILE['timetable_wednesday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_wednesday_end'] }}{% endif %}">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <h3>THU</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-lg-5">
-                                                                <label for="thursday_timepicker_start"></label>
-                                                                <input id="thursday_timepicker_start" class="form-control cbn-timepicker" type="text" name="thursday_timepicker_start" value="{% if Instructor_PROFILE['timetable_thursday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_thursday_start'] }}{% endif %}">
-                                                            </div>
-                                                            <div class="col-lg-2" align="center"><h3>-</h3></div>
-                                                            <div class="col-lg-5">
-                                                                <label for="thursday_timepicker_end"></label>
-                                                                <input id="thursday_timepicker_end" class="form-control cbn-timepicker" type="text" name="thursday_timepicker_end" value="{% if Instructor_PROFILE['timetable_thursday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_thursday_end'] }}{% endif %}">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <h3>FRI</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-lg-5">
-                                                                <label for="friday_timepicker_start"></label>
-                                                                <input id="friday_timepicker_start" class="form-control cbn-timepicker" type="text" name="friday_timepicker_start" value="{% if Instructor_PROFILE['timetable_friday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_friday_start'] }}{% endif %}">
-                                                            </div>
-                                                            <div class="col-lg-2" align="center"><h3>-</h3></div>
-                                                            <div class="col-lg-5">
-                                                                <label for="friday_timepicker_end"></label>
-                                                                <input id="friday_timepicker_end" class="form-control cbn-timepicker" type="text" name="friday_timepicker_end" value="{% if Instructor_PROFILE['timetable_friday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_friday_end'] }}{% endif %}">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <hr>
-
-                                            <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <h3 style="color: #d20c0c;">SAT</h3>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-10">
-                                                    <div class="form-group">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-lg-5">
-                                                                <label for="saturday_timepicker_start"></label>
-                                                                <input id="saturday_timepicker_start" class="form-control cbn-timepicker" type="text" name="saturday_timepicker_start" value="{% if Instructor_PROFILE['timetable_saturday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_saturday_start'] }}{% endif %}">
-                                                            </div>
-                                                            <div class="col-lg-2" align="center"><h3>-</h3></div>
-                                                            <div class="col-lg-5">
-                                                                <label for="saturday_timepicker_end"></label>
-                                                                <input id="saturday_timepicker_end" class="form-control cbn-timepicker" type="text" name="saturday_timepicker_end" value="{% if Instructor_PROFILE['timetable_saturday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_saturday_end'] }}{% endif %}">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
+									</form>
+								</div>
+							</div>
+							<!-- /profile info -->
+
+
+							<!-- Account settings -->
+							<div class="card">
+								<div class="card-header header-elements-inline">
+									<h5 class="card-title">Availiblity</h5>
+									<div class="header-elements">
+										<div class="list-icons">
+					                		<a class="list-icons-item" data-action="collapse"></a>
+					                		<a class="list-icons-item" data-action="reload"></a>
+					                		<a class="list-icons-item" data-action="remove"></a>
+					                	</div>
+				                	</div>
+								</div>
+
+								<div class="card-body">
+									<form id="updateTimetableAction" action="{{ urlFor( 'updateInstructorTimetableAction' ) }}" method="post" role="form"><br><br><br>
+
+
+                                    
+										<div class="form-group">
+													<h3 style="color: #d20c0c;">Sunday</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Availible From</label>
+													<input id="sunday_timepicker_start" class="form-control cbn-timepicker" type="text" name="sunday_timepicker_start" value="{% if Instructor_PROFILE['timetable_sunday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_sunday_start'] }}{% endif %}">
+												</div>
+
+												<div class="col-md-6">
+													<label></label>
+													<label>To</label>
+													<input id="sunday_timepicker_end" class="form-control cbn-timepicker" type="text" name="sunday_timepicker_end" value="{% if Instructor_PROFILE['timetable_sunday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_sunday_end'] }}{% endif %}">
+												</div>
+											</div>
+										</div>
+
+
+
+										<div class="form-group">
+													<h3>Monday</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Availible From</label>
+													<input id="monday_timepicker_start" class="form-control cbn-timepicker" type="text" name="monday_timepicker_start" value="{% if Instructor_PROFILE['timetable_monday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_monday_start'] }}{% endif %}">
+												</div>
+
+												<div class="col-md-6">
+													<label></label>
+													<label>To</label>
+													<input id="monday_timepicker_end" class="form-control cbn-timepicker" type="text" name="monday_timepicker_end" value="{% if Instructor_PROFILE['timetable_monday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_monday_end'] }}{% endif %}">
+												</div>
+											</div>
+										</div>
+
+
+
+										<div class="form-group">
+													<h3>Tuesday</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Availible From</label>
+													<input id="tuesday_timepicker_start" class="form-control cbn-timepicker" type="text" name="tuesday_timepicker_start" value="{% if Instructor_PROFILE['timetable_tuesday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_tuesday_start'] }}{% endif %}">
+												</div>
+
+												<div class="col-md-6">
+													<label></label>
+													<label>To</label>
+													<input id="tuesday_timepicker_end" class="form-control cbn-timepicker" type="text" name="tuesday_timepicker_end" value="{% if Instructor_PROFILE['timetable_tuesday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_tuesday_end'] }}{% endif %}">
+												</div>
+											</div>
+										</div>
+
+
+
+										<div class="form-group">
+													<h3>Wednesday</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Availible From</label>
+													<input id="wednesday_timepicker_start" class="form-control cbn-timepicker" type="text" name="wednesday_timepicker_start" value="{% if Instructor_PROFILE['timetable_wednesday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_wednesday_start'] }}{% endif %}">
+												</div>
+
+												<div class="col-md-6">
+													<label></label>
+													<label>To</label>
+													<input id="wednesday_timepicker_end" class="form-control cbn-timepicker" type="text" name="wednesday_timepicker_end" value="{% if Instructor_PROFILE['timetable_wednesday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_wednesday_end'] }}{% endif %}">
+												</div>
+											</div>
+										</div>
+
+
+
+										<div class="form-group">
+													<h3>Thursday</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Availible From</label>
+													<input id="thursday_timepicker_start" class="form-control cbn-timepicker" type="text" name="thursday_timepicker_start" value="{% if Instructor_PROFILE['timetable_thursday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_thursday_start'] }}{% endif %}">
+												</div>
+
+												<div class="col-md-6">
+													<label></label>
+													<label>To</label>
+													<input id="thursday_timepicker_end" class="form-control cbn-timepicker" type="text" name="thursday_timepicker_end" value="{% if Instructor_PROFILE['timetable_thursday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_thursday_end'] }}{% endif %}">
+												</div>
+											</div>
+										</div>
+
+
+
+										<div class="form-group">
+													<h3>Friday</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Availible From</label>
+													<input id="friday_timepicker_start" class="form-control cbn-timepicker" type="text" name="friday_timepicker_start" value="{% if Instructor_PROFILE['timetable_friday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_friday_start'] }}{% endif %}">
+												</div>
+
+												<div class="col-md-6">
+													<label></label>
+													<label>To</label>
+													<input id="friday_timepicker_end" class="form-control cbn-timepicker" type="text" name="friday_timepicker_end" value="{% if Instructor_PROFILE['timetable_friday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_friday_end'] }}{% endif %}">
+												</div>
+											</div>
+										</div>
+
+
+
+										<div class="form-group">
+													<h3 style="color: #d20c0c;">Saturday</h3>
+											<div class="row">
+												<div class="col-md-6">
+													<label>Availible From</label>
+													<input id="saturday_timepicker_start" class="form-control cbn-timepicker" type="text" name="saturday_timepicker_start" value="{% if Instructor_PROFILE['timetable_saturday_start'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_saturday_start'] }}{% endif %}">
+												</div>
+
+												<div class="col-md-6">
+													<label></label>
+													<label>To</label>
+													<input id="saturday_timepicker_end" class="form-control cbn-timepicker" type="text" name="saturday_timepicker_end" value="{% if Instructor_PROFILE['timetable_saturday_end'] == "Request Only" %}{% else %}{{ Instructor_PROFILE['timetable_saturday_end'] }}{% endif %}">
+												</div>
+											</div>
+										</div>
 
                                             <input type="hidden" name="Instructor_id" value="{{ Instructor_PROFILE['Instructor_id']|e }}">
 
-                                        </div>
-                                        <div class="modal-footer">
-
-                                            <button type="submit" class="btn btn-success pull-left" onclick="return comestoarraAlert( '#updateTimetableAction', 'warning', '' );">Update Time Table</button>
-
-                                        </div>
+				                        <div class="text-right">
+				                        	<button type="submit" class="btn btn-success pull-left" onclick="return comestoarraAlert( '#updateTimetableAction', 'warning', '' );">Update Time Table</button>
+				                        </div>
 
                                         <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
+			                        </form>
+								</div>
+							</div>
+							<!-- /account settings -->
 
-                                    </form>
-                                </div>
+				    	</div>
+					</div>
+					<!-- /left content -->
 
+
+					<!-- Right sidebar component -->
+					<div class="sidebar sidebar-light bg-transparent sidebar-component sidebar-component-right wmin-300 border-0 shadow-0 order-1 order-md-2 sidebar-expand-md">
+
+						<!-- Sidebar content -->
+						<div class="sidebar-content">
+
+							<!-- User card -->
+							<div class="card">
+								<div class="card-body text-center">
+									<div class="card-img-actions d-inline-block mb-3">
+
+
+                            {% if Instructor_PROFILE['avatar'] %}
+                                <p align="center"> <img src="{{ PUBLIC_DIR }}avatars/Instructors/{{ Instructor_PROFILE['avatar'] }}" class="img-fluid rounded-circle" width="170" height="170"></p>
+                            {% else %}
+                                <p align="center"><img src="{% if Swimmer_PROFILE['gender'] == '1' %}http://www.businesssouthwest.com.au/wp-content/uploads/2017/11/Female-Avatar-500x500.jpg{% endif %}{% if Swimmer_PROFILE['gender'] == '2' %}http://www.businesssouthwest.com.au/wp-content/uploads/2017/11/Male-Avatar-500x500.jpg{% endif %}" class="img-fluid rounded-circle" width="170" height="170"></p>
+                            {% endif %}
+
+
+										<div class="card-img-actions-overlay card-img rounded-circle">
+											<a href="#" class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round">
+												<i class="icon-plus3"></i>
+											</a>
+											<a href="user_pages_profile.html" class="btn btn-outline bg-white text-white border-white border-2 btn-icon rounded-round ml-2">
+												<i class="icon-link"></i>
+											</a>
+										</div>
+									</div>
+
+						    		<h6 class="font-weight-semibold mb-0">{{ Instructor_PROFILE['first_name'] }} {{ Instructor_PROFILE['last_name'] }}</h6>
+						    		<span class="d-block text-muted">
+                                {% if Instructor_PROFILE['specialties'] %}
+                                    Specialty: {{ Instructor_PROFILE['specialties']|e }}
                                 {% endif %}
+                                    </span>
 
-                                <div class="tab-pane fade in" id="appointment">
-                                    <br />
+					    			<div class="card-img-actions d-inline-block mb-3"><br>
+                                        <form id="uploadAvatarAction" action="{{ urlFor( 'uploadInstructorAvatarAction' ) }}" method="post" enctype="multipart/form-data">
+                                            <span id="avatar_button" class="btn btn-block btn-default btn-file" rel="tooltip"  data-placement="bottom" title="Select an avatar image from your hard-disk, only .jpg">
+                                                UPLOAD NEW AVATAR <input type="file" id="avatar_file" name="avatar_file" accept="image/*" required >
+                                            </span>
+                                        <span class="form-text text-muted">Accepted formats: png, jpg. Max file size 2Mb. Must be at least 100x100.</span>
+                                            <input type="hidden" name="MAX_FILE_SIZE" value="{{ HUGE_AVATAR_MAX_SIZE }}" />
+                                            <input type="hidden" id="Instructor_id" name="Instructor_id" value="{{ Instructor_PROFILE['Instructor_id'] }}">
+                                            <input type="hidden" id="first_name" name="first_name" value="{{ Instructor_PROFILE['first_name'] }}">
+                                            <input type="hidden" id="last_name" name="last_name" value="{{ Instructor_PROFILE['last_name'] }}">
+                                            <input type="hidden" id="user_name" name="user_name" value="{{ Instructor_PROFILE['user_name'] }}">
+                                            <input type="hidden" id="user_email" name="user_email" value="{{ Instructor_PROFILE['user_email'] }}">
+                                            <output id="cbn_avatar_list"></output>
+                                            <input type="submit" id="avatar_upload" onclick="return comestoarraAlert( '#uploadAvatarAction', 'warning', '' );" class='btn btn-block btn-success' value="UPLOAD NEW AVATAR">
+                                            <a id="avatar_upload_cancel" onclick="reload()" class='btn btn-block btn-danger'>CANCEL</a>
+                                            <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
 
-                                    <div class="dataTable_wrapper">
+                                        </form>
+			                    	</div>
 
-                                        <table class="table table-striped table-bordered table-hover" id="all-appointment">
-                                            <thead>
-                                            <tr>
-                                                <th class="cbn-table-center" width="20%">#ID</th>
-                                                <th class="cbn-table-center">Swimmer</th>
-                                                <th class="cbn-table-center">Schedule</th>
-                                                <th class="cbn-table-center">Notes</th>
-                                                <th class="cbn-table-center">Instructor Notes</th>
-                                                {% if ( user.user_id != ID and ROLE == 7 ) %}
-                                                    <th class="cbn-table-center" width="12%">Action</th>
-                                                {% endif %}
-                                            </tr>
-                                            </thead>
-                                            <tbody>
+
+						    	</div>
+					    	</div>
+					    	<!-- /user card -->
+
+
+							<!-- Latest connections -->
+							<div class="card">
+								<div class="card-header bg-transparent header-elements-inline">
+									<span class="card-title font-weight-semibold">Swim Lessons</span>
+									<div class="header-elements">
+			                		</div>
+								</div>
+
+								<ul class="media-list media-list-linked my-2">
+
+                                    
                                             {% if Swimmer_APPOINTMENT|length > 0 %}
                                                 {% for appointment in Swimmer_APPOINTMENT %}
-                                                    <tr>
-                                                        <td class="cbn-table-center" width="20%"><strong>#{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</strong><br>{% if appointment.cancelled == 1 %}<span class="label label-danger">cancelled</span>{% endif %}</td>
-                                                        <td class="cbn-table-center">{{ appointment.first_name }} {{ appointment.last_name }} {% if appointment.specialties %}<a class="label label-info">{{ appointment.specialties|e }}</a>{% endif %}<br><span class="label label-default">{{ appointment.type }}</span></td>
-                                                        <td class="cbn-table-center">
-                                                            <strong>{{ appointment.start|replace({'T': ' at '}) }}</strong>
-                                                            <br>
+
+									<li>
+										<a href="#" class="media">
+											<div class="mr-3">
+												<img src="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png" class="rounded-circle" width="40" height="40" alt="">
+											</div>
+											<div class="media-body">
+												<div class="media-title font-weight-semibold">{{ appointment.first_name }} {{ appointment.last_name }} {% if appointment.specialties %}<a class="label label-info">{{ appointment.specialties|e }}</a>{% endif %}</div>
+												<span class="text-muted font-size-sm">{{ appointment.type }}</span><br>
+                                                <span class="text-muted font-size-sm">
+                                                            {{ appointment.start|replace({'T': ' at '}) }}
                                                             {% if dom.dueDate|date('Y-m-d') == appointment.appointment_date %}
                                                                 {% if appointment.finished == 0 %}
                                                                     <span class="label label-success">today</span>
@@ -848,252 +611,30 @@
                                                                     <span class="label label-danger">expired</span>
                                                                 {% endif %}
                                                             {% endif %}
-                                                        </td>
-                                                        <td>{{ appointment.notes|raw }}</td>
-                                                        <td>{{ appointment.notes_Instructor|raw }}</td>
-                                                        {% if ( user.user_id != ID and ROLE == 7 ) %}
-                                                            <td class="cbn-table-center" width="12%">
+                                                </span>
+											</div>
+											<div class="align-self-center ml-3">
+												<span class="badge badge-mark bg-success border-success"></span>
+											</div>
+										</a>
+									</li>
 
-                                                                {% if appointment.cancelled == 1 %}
-                                                                    <a href="#" role="button" class="btn btn-warning" data-toggle="modal" data-target="#undoAppointment{{ appointment.appointment_id|e }}" rel="tooltip" data-placement="top" title="Activate Appointment Data ?"><i class="fa fa-reply"></i></a>
-                                                                    {% if appointment.finished == 0 %}
-                                                                        <a href="#" role="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteAppointment{{ appointment.appointment_id|e }}" rel="tooltip" data-placement="top" title="Delete Appointment Data ?"><i class="fa fa-trash"></i></a>
-                                                                    {% endif %}
-                                                                {% else %}
-                                                                    {% if appointment.finished == 0 %}
-                                                                        <a href="#" role="button" class="btn btn-warning" data-toggle="modal" data-target="#cancelAppointment{{ appointment.appointment_id|e }}" rel="tooltip" data-placement="top" title="Cancel Appointment Data ?"><i class="fa fa-times"></i></a>
-                                                                    {% else %}
-                                                                        <span class="label label-success">FINISHED</span>
-                                                                    {% endif %}
-                                                                {% endif %}
 
-                                                                {% if appointment.finished == 0 and dom.dueDate|date('Y-m-d') == appointment.appointment_date %}
-                                                                    <a href="#" role="button" class="btn btn-success" data-toggle="modal" data-target="#finishAppointment{{ appointment.appointment_id|e }}" rel="tooltip" data-placement="top" title="Finish this Appointment Data ?"><i class="fa fa-check"></i></a>
-                                                                {% endif %}
-
-                                                            </td>
-                                                        {% endif %}
-                                                    </tr>
-
-                                                    {% if ( user.user_id != ID and ROLE == 7 ) %}
-
-                                                        <!-- Finished Appointment Modal -->
-                                                        <div class="modal fade" id="finishAppointment{{ appointment.appointment_id|e }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                                                                        <h4 class="modal-title" id="myModalLabel">Finish this Lesson : #{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</h4>
-                                                                    </div>
-
-                                                                    <form action="{{ urlFor( 'finishedSwimmerAppointmentByInstructorAction' ) }}" method="post" role="form">
-
-                                                                        <div class="modal-body">
-
-                                                                            <div class="form-group">
-                                                                                <h5>Are you sure want to finished this appointment ?</h5>
-                                                                            </div>
-
-                                                                            <div id="notes_Instructor" class="form-group">
-                                                                                <label for="notes_Instructor">Notes</label>
-                                                                                <textarea name="notes_Instructor" id="notes_Instructor" class="form-control" placeholder="notes" style="height: 120px;">{{ appointment.notes_Instructor|raw }}</textarea>
-                                                                            </div>
-
-                                                                            <input type="hidden" name="appointment_id" value="{{ appointment.appointment_id|e }}">
-
-                                                                        </div>
-                                                                        <div class="modal-footer">
-
-                                                                            <a class="btn btn-danger" data-dismiss="modal">No</a>
-                                                                            <button type="submit" class="btn btn-success pull-left">Yes</button>
-
-                                                                        </div>
-
-                                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                                                    </form>
-
-                                                                </div>
-                                                                <!-- /.modal-content -->
-                                                            </div>
-                                                            <!-- /.modal-dialog -->
-                                                        </div>
-                                                        <!-- /.modal -->
-
-                                                        <!-- Activated Appointment Modal -->
-                                                        <div class="modal fade" id="undoAppointment{{ appointment.appointment_id|e }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                                                                        <h4 class="modal-title" id="myModalLabel">Activate Lesson : #{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</h4>
-                                                                    </div>
-
-                                                                    <form action="{{ urlFor( 'activatedSwimmerAppointmentByInstructorAction' ) }}" method="post" role="form">
-
-                                                                        <div class="modal-body">
-
-                                                                            <div class="form-group">
-                                                                                <h5>Are you sure want to activated this appointment ?</h5>
-                                                                            </div>
-
-                                                                            <div id="notes_Instructor" class="form-group">
-                                                                                <label for="notes_Instructor">Notes</label>
-                                                                                <textarea name="notes_Instructor" id="notes_Instructor" class="form-control" placeholder="notes" style="height: 120px;">{{ appointment.notes_Instructor|raw }}</textarea>
-                                                                            </div>
-
-                                                                            <input type="hidden" name="appointment_id" value="{{ appointment.appointment_id|e }}">
-
-                                                                        </div>
-                                                                        <div class="modal-footer">
-
-                                                                            <a class="btn btn-danger" data-dismiss="modal">No</a>
-                                                                            <button type="submit" class="btn btn-success pull-left">Yes</button>
-
-                                                                        </div>
-
-                                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                                                    </form>
-
-                                                                </div>
-                                                                <!-- /.modal-content -->
-                                                            </div>
-                                                            <!-- /.modal-dialog -->
-                                                        </div>
-                                                        <!-- /.modal -->
-
-                                                        <!-- Cancelled Appointment Modal -->
-                                                        <div class="modal fade" id="cancelAppointment{{ appointment.appointment_id|e }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                                                                        <h4 class="modal-title" id="myModalLabel">Cancel Lesson : #{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</h4>
-                                                                    </div>
-
-                                                                    <form action="{{ urlFor( 'cancelledSwimmerAppointmentByInstructorAction' ) }}" method="post" role="form">
-
-                                                                        <div class="modal-body">
-
-                                                                            <div class="form-group">
-                                                                                <h5>Are you sure want to cancelled this appointment ?</h5>
-                                                                            </div>
-
-                                                                            <div id="notes_Instructor" class="form-group">
-                                                                                <label for="notes_Instructor">Notes</label>
-                                                                                <textarea name="notes_Instructor" id="notes_Instructor" class="form-control" placeholder="notes" style="height: 120px;">{{ appointment.notes_Instructor|raw }}</textarea>
-                                                                            </div>
-
-                                                                            <input type="hidden" name="appointment_id" value="{{ appointment.appointment_id|e }}">
-
-                                                                        </div>
-                                                                        <div class="modal-footer">
-
-                                                                            <a class="btn btn-danger" data-dismiss="modal">No</a>
-                                                                            <button type="submit" class="btn btn-success pull-left">Yes</button>
-
-                                                                        </div>
-
-                                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                                                    </form>
-
-                                                                </div>
-                                                                <!-- /.modal-content -->
-                                                            </div>
-                                                            <!-- /.modal-dialog -->
-                                                        </div>
-                                                        <!-- /.modal -->
-
-                                                        <!-- Deleted Appointment Modal -->
-                                                        <div class="modal fade" id="deleteAppointment{{ appointment.appointment_id|e }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                            <div class="modal-dialog">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
-                                                                        <h4 class="modal-title" id="myModalLabel">Delete Appointment : #{{ NAME }} - {{ appointment.created|replace({'-': '', ' ': '', ':': ''}) }} - {{ appointment.appointment_id|e }}</h4>
-                                                                    </div>
-
-                                                                    <form action="{{ urlFor( 'deletedSwimmerAppointmentByInstructorAction' ) }}" method="post" role="form">
-
-                                                                        <div class="modal-body">
-
-                                                                            <div class="form-group">
-                                                                                <h5>Are you sure want to deleted this appointment ?</h5>
-                                                                            </div>
-
-                                                                            <input type="hidden" name="appointment_id" value="{{ appointment.appointment_id|e }}">
-
-                                                                        </div>
-                                                                        <div class="modal-footer">
-
-                                                                            <a class="btn btn-danger" data-dismiss="modal">No</a>
-                                                                            <button type="submit" class="btn btn-success pull-left">Yes</button>
-
-                                                                        </div>
-
-                                                                        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
-                                                                    </form>
-
-                                                                </div>
-                                                                <!-- /.modal-content -->
-                                                            </div>
-                                                            <!-- /.modal-dialog -->
-                                                        </div>
-                                                        <!-- /.modal -->
-
-                                                    {% endif %}
 
                                                 {% endfor %}
                                             {% endif %}
-                                            </tbody>
-                                        </table>
+								</ul>
+							</div>
+							<!-- /latest connections -->
 
-                                    </div>
+						</div>
+						<!-- /sidebar content -->
 
-                                </div>
+					</div>
+					<!-- /right sidebar component -->
 
-                                <div class="tab-pane fade in" id="Instructor-calendar">
-                                    <br />
-
-                                    <div id="calendar"></div>
-
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-
-                </div>
-                <!-- /.col-lg-12 -->
-            </div>
-
-        {% else %}
-
-                <!-- /.row -->
-                <div class="col-lg-12" style="padding-top: 10px;">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            SORRY !
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <p>Sorry, You are not allowed to be here !</p>
-                            <a class="btn btn-default btn-lg btn-block" href="{{ urlFor( 'dashboard' ) }}">Back to Dashboard</a>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-
-            {% endif %}
-
-				<!-- /dashboard content -->
+				</div>
+				<!-- /inner container -->
 
 			</div>
 			<!-- /content area -->
@@ -1213,6 +754,39 @@
             document.getElementById('avatar_file').addEventListener('change', handleFileSelect, false);
 
         });
+    </script>
+    <script>
+
+       function comestoarraAlert ( formclass, type, link ) {
+
+            swal({
+                title: "Are you sure ?",
+                text: "{{ USERNAME }}, are you sure want to continue ?",
+                type: type,
+                showCancelButton: true,
+                confirmButtonColor: 'green',
+                confirmButtonText: 'Yes !',
+                cancelButtonText: "No !",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function ( isConfirm ) {
+                if ( isConfirm ) {
+                    swal("Done!", "Congratulations !", "success");
+                    if ( formclass != '' ) {
+                        $(formclass).submit();
+                    }
+                    if ( link != '' ) {
+                        window.location = link;
+                    }
+                } else {
+                    swal("Cancelled", "Action was cancelled by {{ USERNAME }} :)", "error");
+                }
+            });
+
+            return false;
+        }
+
     </script>
 
     <script src="{{ GLOBAL_COMPONENTS }}datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script>

@@ -5,7 +5,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Limitless - Responsive Web Application Kit by Eugene Kopyov</title>
+	<title>Swim School of Bend Appointment Manager</title>
+    <link rel="shortcut icon" href="{% if APP_FAVICON != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_FAVICON }} {% else %} {{ DEFAULT_FAVICON }} {% endif %}">
 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -44,7 +45,7 @@
 	<!-- Main navbar -->
 	<div class="navbar navbar-expand-md navbar-dark">
 		<div class="navbar-brand wmin-0 mr-5">
-			<a href="index.html" class="d-inline-block">
+			<a href="{{ urlFor( 'dashboard' ) }}" class="d-inline-block">
 				<img src="../comestoarra/Views/Backend/assets/global_assets/images/logo_light.png" alt="">
 			</a>
 		</div>
@@ -284,6 +285,7 @@
 							</div>
 						</div>
 						<!-- /marketing campaigns -->
+
 
 
 						<!-- Quick stats boxes -->
