@@ -6,11 +6,7 @@
 
     {{ parent() }}
 
-    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}datatables/media/css/dataTables.bootstrap.min.css" type="text/css" />
-
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-
-    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.css" type="text/css" />
 
 {% endblock %}
 
@@ -40,43 +36,25 @@
 
         <!-- /.row -->
         <div class="row">
+
             <div class="col-lg-3">
 
                 <div class="panel panel-default">
                     <div class="modal-body">
-                        {% if Swimmer_PROFILE['avatar'] %}
-                            <p align="center"> <img src="{{ PUBLIC_DIR }}avatars/Swimmers/{{ Swimmer_PROFILE['avatar'] }}" alt="" width="250px"></p>
-                        {% else %}
-                            <p align="center"><img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="200px"></p>
-                        {% endif %}
-                        <hr>
-                        <p align="center">
-                            <strong>
-                                {% if Swimmer_PROFILE['last_name'] %}{{ Swimmer_PROFILE['last_name']|e }}, {% endif %}{{ Swimmer_PROFILE['first_name']|e }}
-                            </strong><br>
-                        </p>
-                        <hr>
-                        <p align="center">
-                            <strong>#{{ NAME }} - {{ Swimmer_PROFILE['birthdate']|replace({'-': ''}) }} - P{{ Swimmer_PROFILE['Swimmer_id']|e }}</strong>
-                        </p>
+                        <p align="center"><img src="{{ AVATAR }}" alt="" width="200px"></p>
                     </div>
                     <div class="modal-footer">
 
                         <div class="col-md-12">
-
-                            <form id="uploadAvatarAction" action="{{ urlFor( 'uploadSwimmerAvatarAction' ) }}" method="post" enctype="multipart/form-data">
-                                <span id="avatar_button" class="btn btn-block btn-default btn-file" rel="tooltip"  data-placement="bottom" title="Select an avatar image from your hard-disk, only .jpg">
+                            <form id="uploadAvatarAction" action="{{ urlFor( 'uploadAvatarAction' ) }}" method="post" enctype="multipart/form-data">
+                                <span id="avatar_button" class="btn btn-block btn-default btn-file" data-toggle="tooltip" data-placement="bottom" title="Select an avatar image from your hard-disk">
                                     UPLOAD NEW AVATAR <input type="file" id="avatar_file" name="avatar_file" accept="image/*" required >
                                 </span>
                                 <input type="hidden" name="MAX_FILE_SIZE" value="{{ HUGE_AVATAR_MAX_SIZE }}" />
-                                <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
-                                <input type="hidden" id="first_name" name="first_name" value="{{ Swimmer_PROFILE['first_name'] }}">
-                                <input type="hidden" id="last_name" name="last_name" value="{{ Swimmer_PROFILE['last_name'] }}">
-                                <input type="hidden" id="user_name" name="user_name" value="{{ Swimmer_PROFILE['user_name'] }}">
-                                <input type="hidden" id="user_email" name="user_email" value="{{ Swimmer_PROFILE['user_email'] }}">
                                 <output id="cbn_avatar_list"></output>
                                 <input type="submit" id="avatar_upload" onclick="return comestoarraAlert( '#uploadAvatarAction', 'warning', '' );" class='btn btn-block btn-success' value="UPLOAD NEW AVATAR">
                                 <a id="avatar_upload_cancel" onclick="reload()" class='btn btn-block btn-danger'>CANCEL</a>
+
                                 <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
 
                             </form>
@@ -96,8 +74,8 @@
                     <div class="panel-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs"> <!-- Nav tabs/pills -->
-                            <li class="active"><a href="#profile" data-toggle="tab">Swimmer Profile</a></li>
-                            <li><a href="#auth" data-toggle="tab">Login Information</a></li>
+                            <li class="active"><a href="#profile" data-toggle="tab">My Profile</a></li>
+                            <li><a href="#auth" data-toggle="tab">My Login Information</a></li>
                             <li><a href="#activities" data-toggle="tab">My Activities</a></li>
                             <li><a href="#messages" data-toggle="tab">My Messages</a></li>
                         </ul>
@@ -108,13 +86,13 @@
                             <div class="tab-pane fade in active" id="profile">
                                 <br />
 
-                                <form id="updateProfileAction" role="form" method="post" action="{{ urlFor( 'updateSwimmerProfileAction' ) }}">
+                                <form id="updateProfileAction" role="form" method="post" action="{{ urlFor( 'updateProfileAction' ) }}">
 
                                     <div class="col-md-6">
 
                                         <div class="form-group">
                                             <label for="first_name">First Name</label>
-                                            <input id="first_name" name="first_name" class="form-control" value="{{ Swimmer_PROFILE['first_name'] }}">
+                                            <input id="first_name" name="first_name" class="form-control" value="{{ USER_PROFILE['first_name'] }}">
                                         </div>
 
                                     </div>
@@ -123,7 +101,7 @@
 
                                         <div class="form-group">
                                             <label for="last_name">Last Name</label>
-                                            <input id="last_name" name="last_name" class="form-control" value="{{ Swimmer_PROFILE['last_name'] }}">
+                                            <input id="last_name" name="last_name" class="form-control" value="{{ USER_PROFILE['last_name'] }}">
                                         </div>
 
                                     </div>
@@ -131,8 +109,8 @@
                                     <div class="col-md-6">
 
                                         <div class="form-group">
-                                            <label for="birthdate">Birthday</label>
-                                            <input id="birthdate" name="birthdate" class="form-control" value="{{ Swimmer_PROFILE['birthdate'] }}">
+                                            <label for="birth_date">Birthday</label>
+                                            <input id="birth_date" name="birth_date" class="form-control" value="{{ USER_PROFILE['birth_date'] }}">
                                         </div>
 
                                     </div>
@@ -141,28 +119,7 @@
 
                                         <div class="form-group">
                                             <label for="phone">Phone</label>
-                                            <input id="phone" name="phone" class="form-control" value="{{ Swimmer_PROFILE['phone'] }}">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-6">
-
-                                        <div class="form-group">
-                                            <label for="cellphone">Cell Phone</label>
-                                            <input id="cellphone" name="cellphone" class="form-control" value="{{ Swimmer_PROFILE['cellphone'] }}">
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-md-6">
-
-                                        <div class="form-group">
-                                            <label for="gender">Gender</label>
-                                            <select name="gender" id="gender" class="form-control">
-                                                <option value="2" {% if Swimmer_PROFILE['gender'] == '2' %}selected{% endif %}>Male</option>
-                                                <option value="1" {% if Swimmer_PROFILE['gender'] == '1' %}selected{% endif %}>Female</option>
-                                            </select>
+                                            <input id="phone" name="phone" class="form-control" value="{{ USER_PROFILE['phone'] }}">
                                         </div>
 
                                     </div>
@@ -171,7 +128,7 @@
 
                                         <div class="form-group">
                                             <label for="bio">Bio</label>
-                                            <textarea id="bio" name="bio" class="form-control" rows="3">{{ Swimmer_PROFILE['bio'] }}</textarea>
+                                            <textarea id="bio" name="bio" class="form-control" rows="3">{{ USER_PROFILE['bio'] }}</textarea>
                                         </div>
 
                                     </div>
@@ -180,12 +137,12 @@
 
                                         <div class="form-group">
                                             <label for="address">Address</label>
-                                            <textarea id="address" name="address" class="form-control" rows="3">{{ Swimmer_PROFILE['address'] }}</textarea>
+                                            <textarea id="address" name="address" class="form-control" rows="3">{{ USER_PROFILE['address'] }}</textarea>
                                         </div>
 
                                     </div>
 
-                                    <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
+                                    <input type="hidden" id="user_id" name="user_id" value="{{ ID }}">
 
                                     <div class="col-md-6">
 
@@ -206,7 +163,7 @@
 
                                     <div class="form-group">
                                         <label for="user_email">Email Address </label>
-                                        <input id="user_email" class="form-control" value="{{ Swimmer_PROFILE['user_email'] }}" disabled>
+                                        <input id="user_email" class="form-control" value="{{ EMAIL }}" disabled>
                                     </div>
 
                                 </div>
@@ -216,57 +173,55 @@
                                     <label>Username <a class="cbn-modal-link" href="#" data-toggle="modal" data-target="#changeUsername">change your username ?</a></label>
                                     <div class="form-group input-group">
                                         <span class="input-group-addon">@</span>
-                                        <input type="text" class="form-control" placeholder="Username" value="{{ Swimmer_PROFILE['user_name'] }}" disabled>
+                                        <input type="text" class="form-control" placeholder="Username" value="{{ USERNAME }}" disabled>
                                     </div>
 
                                 </div>
 
-                                <form id="changePasswordAction" role="form" method="post" action="{{ urlFor( 'changeSwimmerPasswordAction' ) }}">
 
-                                        <div class="col-md-6">
+                                <form id="changePasswordAction" role="form" method="post" action="{{ urlFor( 'changePasswordAction' ) }}">
 
-                                            <div class="form-group">
-                                                <label for="reset_input_password_new">Password</label>
-                                                <input id="reset_input_password_new" class="form-control" type="text"
-                                                       name="user_password_new" required autocomplete="off" />
-                                            </div>
+                                    <div class="col-md-6">
 
+                                        <div class="form-group">
+                                            <label for="reset_input_password_new">Password</label>
+                                            <input id="reset_input_password_new" class="form-control" type="text"
+                                                   name="user_password_new" required autocomplete="off" />
+                                            <input type='hidden' name='user_name' value='{{ USERNAME }}' />
                                         </div>
 
-                                        <div class="col-md-6">
+                                    </div>
 
-                                            <div class="form-group">
-                                                <label for="reset_input_password_repeat">Password (again)</label>
-                                                <input id="reset_input_password_repeat" class="form-control" type="password"
-                                                       name="user_password_repeat" required autocomplete="off" />
-                                            </div>
+                                    <div class="col-md-6">
 
+                                        <div class="form-group">
+                                            <label for="reset_input_password_repeat">Password (again)</label>
+                                            <input id="reset_input_password_repeat" class="form-control" type="password"
+                                                   name="user_password_repeat" required autocomplete="off" />
                                         </div>
 
-                                        <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
-                                        <input type="hidden" id="user_name" name="user_name" value="{{ Swimmer_PROFILE['user_name'] }}">
+                                    </div>
 
-                                        <div class="col-md-6">
+                                    <div class="col-md-6">
 
-                                            <button type="submit" class="btn btn-danger" onclick="return comestoarraAlert( '#changePasswordAction', 'warning', '' );">Change Password</button>
+                                        <button type="submit" class="btn btn-danger" onclick="return comestoarraAlert( '#changePasswordAction', 'warning', '' );">Change Password</button>
 
-                                        </div>
+                                    </div>
 
                                     <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
 
                                 </form>
-
 
                                 <!-- Change Email Modal -->
                                 <div class="modal fade" id="changeEmail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                 
-                                                <h4 class="modal-title" id="myModalLabel">Change Email Address : {{ Swimmer_PROFILE['user_email'] }}</h4>
+                                                <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                <h4 class="modal-title" id="myModalLabel">Change Email Address : {{ EMAIL }}</h4>
                                             </div>
 
-                                            <form action="{{ urlFor( 'changeSwimmerEmailAction' ) }}" method="post" role="form">
+                                            <form action="{{ urlFor( 'changeEmailAction' ) }}" method="post" role="form">
                                                 <div class="modal-body">
 
                                                     <div class="form-group">
@@ -276,15 +231,12 @@
                                                     </div>
 
                                                 </div>
-                                                <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
-                                                <input type="hidden" id="user_name" name="user_name" value="{{ Swimmer_PROFILE['user_name'] }}">
                                                 <div class="modal-footer">
 
                                                     <a class="btn btn-danger" data-dismiss="modal">Close</a>
                                                     <button type="submit" class="btn btn-success">Submit</button>
 
                                                 </div>
-
                                                 <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
 
                                             </form>
@@ -301,30 +253,25 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                 
-                                                <h4 class="modal-title" id="myModalLabel">Change Username : @{{ Swimmer_PROFILE['user_name'] }}</h4>
+                                                <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                <h4 class="modal-title" id="myModalLabel">Change Username : @{{ USERNAME }}</h4>
                                             </div>
-                                            <form action="{{ urlFor( 'changeSwimmerUsernameAction' ) }}" method="post" role="form">
+                                            <form action="{{ urlFor( 'changeUsernameAction' ) }}" method="post" role="form">
                                                 <div class="modal-body">
 
-                                                    <div class="form-group input-group">
-                                                        <span class="input-group-addon">@</span>
-                                                        <input type="text" class="form-control" placeholder="New Username" name="user_name" required>
-                                                    </div>
+                                                        <div class="form-group input-group">
+                                                            <span class="input-group-addon">@</span>
+                                                            <input type="text" class="form-control" placeholder="New Username" name="user_name" required>
+                                                        </div>
 
                                                 </div>
-
-                                                <input type="hidden" id="Swimmer_id" name="Swimmer_id" value="{{ Swimmer_PROFILE['Swimmer_id'] }}">
-                                                <input type="hidden" id="user_email" name="user_email" value="{{ Swimmer_PROFILE['user_email'] }}">
                                                 <div class="modal-footer">
 
                                                     <a class="btn btn-danger" data-dismiss="modal">Close</a>
                                                     <button type="submit" class="btn btn-success">Submit</button>
 
                                                 </div>
-
                                                 <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-
                                             </form>
                                         </div>
                                         <!-- /.modal-content -->
@@ -339,38 +286,34 @@
                                 <br />
                                 <div class="cbn-activities-panel panel panel-default">
                                     <div class="panel-body">
-                                        <ul class="cbn-activities">
+                                    <ul class="cbn-activities">
 
-                                            {% if USER_AUDIT  %}
+                                        {% if USER_AUDIT  %}
 
-                                                {% for audit in USER_AUDIT %}
+                                            {% for audit in USER_AUDIT %}
 
-                                                    <li class="left clearfix">
+                                                <li class="left clearfix">
                                                     <span class="cbn-activities-img pull-left">
-                                                        {% if Swimmer_PROFILE['avatar'] %}
-                                                            <img src="{{ PUBLIC_DIR }}avatars/Swimmers/{{ Swimmer_PROFILE['avatar'] }}" width="50px" class="img-circle" />
-                                                        {% else %}
-                                                            <img src="{{ PUBLIC_DIR }}avatars/default.jpg" alt="" width="50px">
-                                                        {% endif %}
+                                                        <img src="{{ AVATAR }}" width="50px" class="img-circle" />
                                                     </span>
-                                                        <div class="cbn-activities-body clearfix">
-                                                            <div class="header">
-                                                                <strong class="primary-font">{{ USERNAME }}</strong>
-                                                                <small class="pull-right text-muted">
-                                                                    <i class="fa fa-clock-o fa-fw"></i> {{ audit.created_date }}
-                                                                </small>
-                                                            </div>
-                                                            <p>
-                                                                {{ audit.content_audit|e }}
-                                                            </p>
+                                                    <div class="cbn-activities-body clearfix">
+                                                        <div class="header">
+                                                            <strong class="primary-font">{{ USERNAME }}</strong>
+                                                            <small class="pull-right text-muted">
+                                                                <i class="fa fa-clock-o fa-fw"></i> {{ audit.created_date }}
+                                                            </small>
                                                         </div>
-                                                    </li>
+                                                        <p>
+                                                            {{ audit.content_audit|e }}
+                                                        </p>
+                                                    </div>
+                                                </li>
 
-                                                {% endfor %}
+                                            {% endfor %}
 
-                                            {% endif %}
+                                        {% endif %}
 
-                                        </ul>
+                                    </ul>
 
                                     </div>
                                 </div>
@@ -396,20 +339,20 @@
                                                                 <img src="{{ SENDER_MAIL_AVATARS }}default.jpg" width="50px" class="img-circle" />
                                                             {% endif %}
                                                         </span>
-                                                            <div class="cbn-activities-body clearfix">
-                                                                <div class="header">
-                                                                    <strong class="primary-font">{{ mail.first_name }} {{ mail.last_name }}</strong> <a href="mailto:{{ mail.user_email }}">{{ mail.user_email }}</a>
-                                                                    <small class="pull-right text-muted">
-                                                                        <i class="fa fa-clock-o fa-fw"></i> {{ mail.sent_date }}
-                                                                    </small>
-                                                                </div>
-                                                                <p>
-                                                                    <strong>{{ mail.mail_title|e }}</strong> <span class="label label-danger">unread</span>
-                                                                </p>
-                                                                <p>
-                                                                    {{ mail.mail_content }}
-                                                                </p>
+                                                        <div class="cbn-activities-body clearfix">
+                                                            <div class="header">
+                                                                <strong class="primary-font">{{ mail.first_name }} {{ mail.last_name }}</strong> <a href="mailto:{{ mail.user_email }}">{{ mail.user_email }}</a>
+                                                                <small class="pull-right text-muted">
+                                                                    <i class="fa fa-clock-o fa-fw"></i> {{ mail.sent_date }}
+                                                                </small>
                                                             </div>
+                                                            <p>
+                                                                <strong>{{ mail.mail_title|e }}</strong> <span class="label label-danger">unread</span>
+                                                            </p>
+                                                            <p>
+                                                                {{ mail.mail_content }}
+                                                            </p>
+                                                        </div>
                                                         </a>
                                                     </li>
 
@@ -433,8 +376,8 @@
 
             </div>
             <!-- /.col-lg-12 -->
-        </div>
 
+        </div>
 
     </div><!-- /.container-fluid -->
 {% endblock %}
@@ -447,7 +390,7 @@
     <script type="text/javascript">
 
         $('.row').tooltip({
-            selector: "[rel=tooltip]",
+            selector: "[data-toggle=tooltip]",
             container: "body"
         })
 
@@ -493,102 +436,11 @@
         });
     </script>
 
-    <script src="{{ GLOBAL_COMPONENTS }}datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-    <script src="{{ GLOBAL_COMPONENTS }}datatables/media/js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-    <script>
-        $(document).ready(function() {
-
-            $('#all-appointment').DataTable({
-                "responsive": true,
-                "stateSave": true
-            });
-
-        });
-    </script>
-
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script src="{{ GLOBAL_COMPONENTS }}jqueryui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js" type="text/javascript"></script>
-    <script>
-        $(document).ready(function() {
-
-            $('.cbn-timepicker').timepicker({
-                hourMin: 8,
-                hourMax: 21
-            });
-
-        });
-
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-
-            $("#Instructor_time_table_ajax").hide();
-            $("#date_pick").hide();
-            $("#time_pick").hide();
-            $("#appointment_notes").hide();
-            $("#appointment_footer").hide();
-
-            $("#Instructor_id").change(function(){
-                $("#select_Instructor").hide();
-                $("#Instructor_time_table_ajax").show();
-                $("#date_pick").show().val('');
-                $("#appointment_notes").show();
-                $("#appointment_footer").show();
-                $("#Instructor_day_selected").hide().val('');
-                var Instructor_id=$("#Instructor_id").val();
-                $.ajax({
-                    type: "post",
-                    url: "{{ urlFor( 'SwimmerAppointmentInstructorTimeTable' ) }}",
-                    data: "Instructor_id=" + Instructor_id,
-                    success:function(data){
-                        $("#Instructor_timetable").html(data);
-                    }
-                });
-            });
-
-            $(function() {
-                var dateToday = new Date();
-                $( "#appointment_date_pick" ).datepicker({
-                    dateFormat: 'yy-mm-dd',
-                    changeMonth: true,
-                    changeYear: true,
-                    minDate: dateToday,
-                    yearRange: '{{ "now"|date("Y") }}:{{ "now"|date("Y") + 1 }}',
-                    onSelect: function() {
-                        var date_appointment_selected = $(this).datepicker('getDate');
-                        var day_parse = $.datepicker.formatDate('DD', date_appointment_selected);
-//                        alert( day_parse.toLowerCase() );
-//                        if ( day_parse.toLowerCase() == "sunday" ) {
-//                            $("#time_pick").show();
-//                            $("#appointment_notes").show();
-//                        } else {
-//                            $("#time_pick").hide();
-//                            $("#appointment_notes").show();
-//                            $("#appointment_time_pick").val('');
-//                        }
-                        var Instructor_id = $("#Instructor_id").val();
-                        var appointment_date_pick = $("#appointment_date_pick").val();
-                        $("#Instructor_day_selected").show();
-                        $.ajax({
-                            type: "post",
-                            url: "{{ urlFor( 'SwimmerAppointmentInstructorDayTimeTable' ) }}",
-                            data: { Instructor_id: Instructor_id, day_parse: day_parse.toLowerCase(), appointment_date_pick: appointment_date_pick },
-                            success:function(data){
-                                $("#Instructor_day_selected").html(data);
-                            }
-                        });
-                    }
-                });
-            });
-
-        });
-    </script>
-
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script>
         $(function() {
-            $( "#birthdate" ).datepicker({
-                dateFormat: 'yy-mm-dd',
+            $( "#birth_date" ).datepicker({
+                dateFormat: 'dd-mm-yy',
                 changeMonth: true,
                 changeYear: true,
                 yearRange: '1940:{{ "now"|date("Y") }}'

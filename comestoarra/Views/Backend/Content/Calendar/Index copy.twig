@@ -1,0 +1,225 @@
+{% extends 'Backend/Master/Base.twig' %}
+
+{% block title %}{{ NAME }} - {{ TITLE }}{% endblock %}
+
+{% block head %}
+
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ GLOBAL_COMPONENTS }}fancybox/source/jquery.fancybox.css" type="text/css" />
+
+{% endblock %}
+
+{% block content %}
+
+
+    <div id="page-wrapper">
+
+        <div class="container{% if CONTENT_FLUID %}-fluid{% endif %}">
+
+            <!-- Page Heading -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">
+
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li>
+                            <i class="fa fa-dashboard"></i>  <a href="{{ urlFor( 'dashboard' ) }}">Dashboard</a>
+                        </li>
+                        <li class="active">
+                            <i class="fa fa-calendar"></i> Calendar
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <!-- /.row -->
+
+            {% if PROVIDER == 'DEFAULT' or PROVIDER == 'BSS Instructor Registration' %}
+
+                <!-- /.row -->
+                <div class="row">
+
+                    <div class="col-lg-4">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Lesson Calendar Codes
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="panel-body">
+
+                                {% if ALL_Instructor|length > 0 %}
+                                    {% for Instructor in ALL_Instructor %}
+
+                                        <span class="label label-info">{{ Instructor.first_name|first|upper }}{{ Instructor.last_name|first|upper }}</span> = {% if Instructor.last_name %}{{ Instructor.last_name }}, {% endif %}{{ Instructor.first_name }} <span class="label label-info">{{ Instructor.specialties|e }}</span><br/>
+
+                                    {% endfor %}
+                                {% endif %}
+
+                                <hr>
+                                <span class="label label-primary">&nbsp;&nbsp;&nbsp;</span>  = Upcoming/Active Lesson <br>
+                                <span style="background-color: #d20c0c;" class="label">&nbsp;&nbsp;&nbsp;</span>  = Expired Lesson <br>
+
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+
+                    </div>
+
+
+                    <div class="col-lg-8">
+
+
+                        <div id="calendar"></div>
+
+                    </div>
+
+
+                </div>
+
+            {% else %}
+
+                <!-- /.row -->
+                <div class="col-lg-12" style="padding-top: 10px;">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            SORRY !
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <p>Sorry, You are not allowed to be here !</p>
+                            <a class="btn btn-default btn-lg btn-block" href="{{ urlFor( 'dashboard' ) }}">Back to Dashboard</a>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+
+            {% endif %}
+
+        </div><!-- /.container-fluid -->
+
+    </div><!-- /#page-wrapper -->
+{% endblock %}
+
+{% block footer %}
+
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,basicWeek,basicDay'
+                },
+                defaultView: 'basicWeek',
+                editable: false,
+                eventLimit: false,
+                events: [
+                    {% if ALL_APPOINTMENT|length > 0 %}
+                    {% for appointment in ALL_APPOINTMENT %}
+                    {
+                        Swimmer_id: '{{ appointment.Swimmer_id }}',
+                        Swimmer: '{{ appointment.Swimmer_firstname }} {{ appointment.Swimmer_lastname }}',
+                        Instructor: '{{ appointment.Instructor_firstname|first|upper }}{{ appointment.Instructor_lastname|first|upper }}',
+                        type: {% if ( dom.dueDate|date('Y-m-d') > appointment.appointment_date ) %}'EX'{% else %}'{{ appointment.type|replace({ ' Appointment': '' })|upper }}'{% endif %},
+                        status: {% if appointment.finished == 1 %}'finished'{% else %}''{% endif %},
+                        specialties: '{{ appointment.Instructor_specialties }}',
+                        start: '{{ appointment.start }}',
+                        color: {% if ( dom.dueDate|date('Y-m-d') > appointment.appointment_date and appointment.finished == 0 ) %}'#d20c0c'{% else %}''{% endif %}
+                    },
+                    {% endfor %}
+                    {% endif %}
+
+                ],
+                eventRender: function (calEvent, element) {
+                    var find = '';
+
+                    if ( calEvent.status == "finished" ) {
+                        var replace = find + '<span class="label label-info">' + calEvent.Instructor + '</span> ' + '<span class="label label-default">' + calEvent.type + '</span><br><br>' + '<p align="center">' + calEvent.Swimmer + '<br><span class="label label-success">FINISHED</span></p>';
+                    } else {
+                        var replace = find + '<span class="label label-info">' + calEvent.Instructor + '</span> ' + '<span class="label label-default">' + calEvent.type + '</span><br><br>'+ '<p align="center">' + calEvent.Swimmer + '</p>';
+                    }
+
+                    var newHTML = $(element).html().replace(find, replace);
+                    $(element).html(newHTML);
+                }{% if PROVIDER == 'DEFAULT' %},
+                eventClick: function(calEvent, jsEvent, view) {
+                    window.location = "{{ urlFor( 'Swimmers' ) }}" + calEvent.Swimmer_id;
+
+                }{% endif %}
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        $('.row').tooltip({
+            selector: "[rel=tooltip]",
+            container: "body"
+        })
+
+    </script>
+
+    <script src="{{ GLOBAL_COMPONENTS }}gritter/js/jquery.gritter.min.js" type="text/javascript"></script>
+    {% if errors %}
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ errors }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+    {% endif %}
+
+    {% if flash.error %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-meh-o"></i> Something went wrong !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.error }}</i>",
+                class_name: 'gritter-alert gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.info %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Information !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.info }}</i>",
+                class_name: 'gritter-facebook gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+    {% if flash.success %}
+
+        <script>
+            $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: '<i class="fa fa-smile-o"></i> Congratulations !',
+                // (string | mandatory) the text inside the notification
+                text: "<i>{{ flash.success }}</i>",
+                class_name: 'gritter-success gritter-icon'
+            });
+        </script>
+
+    {% endif %}
+
+{% endblock %}

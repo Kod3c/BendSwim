@@ -1,46 +1,86 @@
-{% extends 'Backend/Content/Auth/Base.twig' %}
 
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Swim School of Bend Appointment Manager</title>
+    <link rel="shortcut icon" href="{% if APP_FAVICON != NULL %} {{ BASE_DIR }}{{ UPLOAD_PATH }}{{ APP_FAVICON }} {% else %} {{ DEFAULT_FAVICON }} {% endif %}">
 
-    {% if APP_LOGO != "" %}
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="../comestoarra/Views/Backend/assets/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+	<link href="../comestoarra/Views/Backend/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="../comestoarra/Views/Backend/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+	<link href="../comestoarra/Views/Backend/assets/css/layout.min.css" rel="stylesheet" type="text/css">
+	<link href="../comestoarra/Views/Backend/assets/css/components.min.css" rel="stylesheet" type="text/css">
+	<link href="../comestoarra/Views/Backend/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
 
-        <div align="center" style="padding-top: 40px;">
+	<!-- Core JS files -->
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/main/jquery.min.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/main/bootstrap.bundle.min.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/loaders/blockui.min.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/ui/slinky.min.js"></script>
+	<!-- /core JS files -->
 
-            <img src="{{ PUBLIC_DIR }}logo/{{ APP_LOGO }}" alt="" width="100px;">
+	<!-- Theme JS files -->
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/visualization/d3/d3.min.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/visualization/d3/d3_tooltip.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/forms/styling/switchery.min.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/ui/moment/moment.min.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/plugins/pickers/daterangepicker.js"></script>
 
-        </div>
+	<script src="../comestoarra/Views/Backend/assets/js/app.js"></script>
+	<script src="../comestoarra/Views/Backend/assets/global_assets/js/demo_pages/dashboard.js"></script>
 
-    {% endif %}
-    <div class="form-login">
-        <form method="post" action="{{ FORGOT_ACTION }}">
-        <h1>Recover Password</h1>
-        <p>
-            <label for="login">Username or email</label>
-            <input type="text" name="user_name_or_email" placeholder="Enter your username or email" required>
-        </p>
+</head>
 
-        <p>
+<body>
 
-            <img id="captchaImage" src="{{ CAPTCHA }}" width="100%" style="margin-top: 10px;"/>
 
-            <input type="text" name="captcha" placeholder="Please enter above characters" required/>
+	<!-- Page content -->
+	<div class="page-content">
 
-        </p>
+		<!-- Main content -->
+		<div class="content-wrapper">
 
-        <p align="center" style="margin: 10px;">Enter Captcha or <a class="link" href="javascript:void(0)" onclick="document.getElementById('captchaImage').src =
+			<!-- Content area -->
+			<div class="content d-flex justify-content-center align-items-center">
 
-                    '{{ CAPTCHA }}&morerandom=' + Math.floor(Math.random() * 10000);"><span class="fa fa-refresh"></span> Refresh</a>
-        </p>
+				<!-- Login form -->
+				<form class="login-form" method="post" action="{{ LOGIN_ACTION }}">
+					<div class="card mb-0">
+						<div class="card-body">
+							<div class="text-center mb-3">
+								<i class="icon-reading icon-2x text-slate-300 border-slate-300 border-3 rounded-round p-3 mb-3 mt-1"></i>
+								<h5 class="mb-0">Forgot your password?</h5><br>
+								<span class="d-block text-muted">Please email wyatt@wyattcarrell.com to have your credentials verified.</span>
+							</div>
 
-        <input type="hidden" name="{{ CSRF_TOKEN_NAME }}" value="{{ CSRF_TOKEN_VALUE }}"/>
-        <p>
-            <input type="submit" name="submit" value="Recover">
-        </p>
-        <br>
-        <div id="auth-link">
-            <a class="link" href="{{ SIGNUP_LINK }}">Register</a> - <a class="link" href="{{ LOGIN_LINK }}">Secure Login</a>
-        </div>
-    </form>​
-    </div>
+							<div class="text-center">
+                                <input class="btn btn-primary" type="button" value="Go back!" onclick="history.back()">
+							</div>
+						</div>
+					</div>
+				</form>
+				<!-- /login form -->
 
-{% endblock %}
+			</div>
+			<!-- /content area -->
+
+		</div>
+		<!-- /main content -->
+
+	</div>
+	<!-- /page content -->
+
+</body>
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+</html>

@@ -198,7 +198,7 @@
 
 					<div class="dropdown-menu dropdown-menu-right">
 						<a href="{{ urlFor( 'users' ) }}" class="dropdown-item"><i class="icon-user-lock"></i> Root User Roles</a>
-						<a href="{{ urlFor( 'allAuditTrails' ) }}" class="dropdown-item"><i class="icon-list-unordered"></i> Audit Trail</a>
+						<!-- /audit trail link -->
 						<div class="dropdown-divider"></div>
 						<a href="{{ urlFor( 'globalSetting' ) }}" class="dropdown-item"><i class="icon-gear"></i> Global Settings</a>
 					</div>
@@ -307,7 +307,7 @@
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <a class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+                                                                     
                                                                     <h4 class="modal-title" id="myModalLabel"><i class="fa fa-key"></i> Create Auth Data : {{ Swimmer.first_name|e }} {{ Swimmer.last_name|e }}</h4>
                                                                 </div>
 
