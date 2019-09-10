@@ -7,7 +7,7 @@
 
 
 A system to help instructors and pool managers regulate and delegate swim lessons and other tasks.<br><br>
-![Image](https://i.imgur.com/wuBuZLV.png)
+![Image](https://i.imgur.com/DyuBtiR.png)
 
 
 
