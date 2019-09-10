@@ -3,7 +3,7 @@
 
 
 
-# Swim Lesson Appointment System v.2.3.0
+# Swim Lesson Appointment System v.2.4.0
 
 
 A system to help instructors and pool managers regulate and delegate swim lessons and other tasks.<br><br>
