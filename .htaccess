@@ -3,7 +3,7 @@ Options -Indexes
 <IfModule mod_rewrite.c>
 
 	RewriteEngine On
-	RewriteBase /BendSwim/
+	RewriteBase /Projects/BendSwim/
 
 	# Force to exclude the trailing slash
 	RewriteCond %{REQUEST_FILENAME} !-d
